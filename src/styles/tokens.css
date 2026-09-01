@@ -1,0 +1,47 @@
+/* ---- Reel design tokens (site-wide continuity layer) ---- */
+:root {
+  /* palette — black ground, xenon light, one amber, one steel */
+  --reel-black: #0a0a0b;
+  --reel-black-2: #121316;
+  --xenon: #edeff2;
+  --xenon-warm: #f1e4cf;
+  --edge-amber: #e4a140;
+  --steel: #7a828e;
+
+  /* true IMAX 15/70 frame: 1.43:1 — nearly square next to 2.39 cinema */
+  --frame-w: min(93vw, calc(92svh * 1.43));
+  --frame-h: calc(var(--frame-w) / 1.43);
+
+  --font-display: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "Space Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  /* animation drivers (set by the boot sequence) */
+  --m: 0;
+  --e: 0;
+
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--reel-black);
+  color: var(--xenon);
+}
+
+body {
+  font-family: var(--font-mono);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow: hidden;
+}
+
+::selection {
+  background: color-mix(in srgb, var(--edge-amber) 40%, transparent);
+  color: var(--xenon);
+}

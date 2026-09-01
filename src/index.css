@@ -1,0 +1,13 @@
+#root {
+  min-height: 100svh;
+}
+
+a {
+  color: inherit;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    scroll-behavior: auto !important;
+  }
+}
