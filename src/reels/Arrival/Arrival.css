@@ -1,5 +1,6 @@
-/* Reel 02 — Arrival. One screen inside the 70mm frame: gloomy grey-green,
-   the language lit against the dark. (.arrival is sized to .gate-screen.) */
+/* Reel 02 — Arrival. Figures in the mist behind, the about-me delivered as
+   three logogram cards. Attend to one and it translates.
+   (.arrival is sized to .gate-screen by Frame.css.) */
 
 .arrival {
   color: var(--arr-ink);
@@ -7,233 +8,245 @@
   container-type: size;
 }
 
-.arrival__sky {
+.arrival__bg {
+  position: absolute;
+  inset: -6%;
+  background-size: cover;
+  background-position: 50% 38%;
+  filter: blur(1.5px) saturate(0.58) brightness(1) contrast(1.02);
+}
+
+/* the shell, faded to almost nothing at the frame's right edge */
+.arrival__shell {
+  position: absolute;
+  right: -34%;
+  top: -24%;
+  width: 44%;
+  height: 150%;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, #060a09 0%, rgba(6, 10, 9, 0.5) 55%, transparent 100%);
+  filter: blur(24px);
+  opacity: 0.55;
+}
+
+.arrival__grade {
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(42% 52% at 30% 46%, rgba(126, 142, 130, 0.14), transparent 72%),
-    radial-gradient(95% 85% at 44% 44%, #29332e 0%, #1a231f 44%, #0b1210 100%);
+    linear-gradient(180deg, rgba(16, 24, 20, 0.22) 0%, rgba(10, 16, 13, 0.44) 100%),
+    radial-gradient(58% 46% at 42% 38%, rgba(60, 82, 70, 0.18), transparent 72%),
+    radial-gradient(128% 108% at 50% 48%, transparent 46%, rgba(0, 0, 0, 0.56) 100%);
 }
-.arrival__sky::after {
+.arrival__grade::after {
   content: "";
   position: absolute;
   inset: 0;
-  background: radial-gradient(120% 100% at 50% 48%, transparent 46%, rgba(0, 0, 0, 0.6) 100%);
+  opacity: 0.05;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
-/* the shell, a dark mass off the frame's right edge */
-.arrival__shell {
-  position: absolute;
-  right: -36%;
-  top: -28%;
-  width: 48%;
-  height: 156%;
-  border-radius: 50%;
-  background: linear-gradient(98deg, transparent 0%, rgba(8, 12, 11, 0.4) 14%, #0a1210 40%, #101a17 100%);
-  box-shadow: inset 46px 0 120px rgba(0, 0, 0, 0.55);
-}
-
-/* faint figures caught in the work-light */
-.arrival__silhouettes .hep {
-  position: absolute;
-  background: radial-gradient(50% 40% at 50% 32%, rgba(122, 140, 129, 0.17), transparent 66%);
-}
-.hep--1 {
-  left: 4%;
-  top: -6%;
-  width: 24%;
-  height: 128%;
-  filter: blur(20px);
-  opacity: 0.8;
-  animation: hep-drift-a 28s ease-in-out infinite alternate;
-}
-.hep--2 {
-  left: 44%;
-  top: 6%;
-  width: 15%;
-  height: 82%;
-  filter: blur(26px);
-  opacity: 0.55;
-  animation: hep-drift-b 34s ease-in-out infinite alternate;
-}
-@keyframes hep-drift-a {
-  from {
-    transform: translate3d(0, 0, 0) scale(1);
-  }
-  to {
-    transform: translate3d(2%, -4%, 0) scale(1.05);
-  }
-}
-@keyframes hep-drift-b {
-  from {
-    transform: translate3d(0, 1%, 0) scale(1.03);
-  }
-  to {
-    transform: translate3d(-3%, -3%, 0) scale(1);
-  }
-}
-
-.arrival__fog {
-  position: absolute;
-  inset: -20% -30%;
-  pointer-events: none;
-}
-.arrival__fog--a {
-  background: radial-gradient(48% 100% at 32% 50%, rgba(130, 146, 136, 0.07), transparent 66%);
-  animation: fog-a 40s linear infinite;
-}
-.arrival__fog--b {
-  background: radial-gradient(44% 100% at 70% 58%, rgba(110, 126, 118, 0.06), transparent 64%);
-  animation: fog-b 52s linear infinite;
-}
-@keyframes fog-a {
-  from {
-    transform: translateX(-9%);
-  }
-  to {
-    transform: translateX(9%);
-  }
-}
-@keyframes fog-b {
-  from {
-    transform: translateX(7%);
-  }
-  to {
-    transform: translateX(-11%);
-  }
-}
-
-/* the logogram — lit ink against the gloom */
-.arrival__glyph {
-  position: absolute;
-  right: 2%;
-  top: 50%;
-  width: 50%;
-  transform: translateY(-50%);
-  z-index: 3;
-  pointer-events: none;
-  mix-blend-mode: screen;
-  opacity: 0.85;
-  /* contrast() crushes the image's near-black ground to true 0 so `screen`
-     drops it cleanly; the radial mask kills the compressed edge box */
-  filter: contrast(2) brightness(1.05) drop-shadow(0 0 30px rgba(150, 172, 158, 0.16));
-  -webkit-mask-image: radial-gradient(circle at 50% 50%, #000 60%, transparent 84%);
-  mask-image: radial-gradient(circle at 50% 50%, #000 60%, transparent 84%);
-  animation: glyph-breathe 15s ease-in-out infinite;
-}
-@keyframes glyph-breathe {
-  0%,
-  100% {
-    scale: 1;
-    opacity: 0.74;
-  }
-  50% {
-    scale: 1.018;
-    opacity: 0.82;
-  }
-}
-
+/* ---------- eyebrow ---------- */
 .arrival__eyebrow {
   position: absolute;
   left: 7%;
-  top: 10%;
-  z-index: 4;
-  margin: 0;
-  font-family: var(--font-mono);
-  font-size: clamp(8px, 1.3cqw, 10px);
-  letter-spacing: 0.3em;
-  text-transform: uppercase;
-  color: color-mix(in srgb, var(--arr-ember) 55%, var(--arr-ink));
-}
-
-.arrival__content {
-  position: absolute;
-  left: 7%;
-  top: 50%;
-  width: 40%;
-  transform: translateY(-50%);
+  top: 8%;
   z-index: 4;
   display: flex;
-  flex-direction: column;
-  gap: 1.15em;
+  align-items: baseline;
+  gap: 1.4em;
+  font-family: var(--font-mono);
+  font-size: clamp(8px, 1.2cqw, 10px);
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--arr-ember) 58%, var(--arr-ink));
 }
-.arrival__content p {
+.arrival__hint {
+  letter-spacing: 0.18em;
+  color: color-mix(in srgb, var(--arr-ink) 48%, transparent);
+}
+
+/* ---------- the cards ---------- */
+.cards {
+  position: absolute;
+  left: 6%;
+  right: 6%;
+  top: 53%;
+  transform: translateY(-50%);
+  z-index: 3;
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  gap: 2.4%;
   margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.card {
+  position: relative;
+  flex: 1 1 0;
+  max-width: 30%;
+  padding: clamp(14px, 1.9cqw, 26px);
+  overflow: hidden;
+  background: rgba(10, 16, 14, 0.56);
+  border: 1px solid rgba(200, 212, 202, 0.15);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+  transition:
+    transform 0.55s cubic-bezier(0.2, 0.7, 0.2, 1),
+    opacity 0.5s ease,
+    filter 0.5s ease,
+    border-color 0.5s ease,
+    background 0.5s ease;
+}
+.card:nth-child(1) {
+  transform: translateY(-16px) rotate(-1.4deg);
+}
+.card:nth-child(2) {
+  transform: translateY(13px) rotate(0.3deg);
+}
+.card:nth-child(3) {
+  transform: translateY(-5px) rotate(1.5deg);
+}
+
+.card__glyph {
+  position: absolute;
+  right: -26%;
+  top: 50%;
+  width: 82%;
+  transform: translateY(-50%) rotate(var(--rot, 0deg)) scaleX(var(--flip, 1));
+  mix-blend-mode: screen;
+  opacity: 0.17;
+  filter: contrast(2.1) brightness(0.8);
+  pointer-events: none;
+  transition: opacity 0.6s ease;
+}
+.card__num {
+  position: relative;
+  z-index: 1;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: lowercase;
+  color: color-mix(in srgb, var(--arr-ember) 68%, transparent);
+}
+.card__text {
+  position: relative;
+  z-index: 1;
+  margin: 0.85em 0 0;
   font-family: var(--font-arr-body);
   font-optical-sizing: auto;
   font-weight: 400;
-  font-size: clamp(0.78rem, 1.85cqw, 1.02rem);
-  line-height: 1.62;
-  letter-spacing: 0.003em;
-  color: var(--arr-ink);
+  font-size: clamp(0.72rem, 1.52cqw, 0.92rem);
+  line-height: 1.58;
+  color: color-mix(in srgb, var(--arr-ink) 90%, transparent);
+  transition: color 0.5s ease;
   text-wrap: pretty;
 }
 
-/* ---------- reduced motion: stacked, static ---------- */
+/* attend to one card — it translates, the others fall back into the mist */
+.cards:hover .card:not(:hover):not(:focus-within),
+.cards:focus-within .card:not(:hover):not(:focus-within) {
+  opacity: 0.38;
+  filter: blur(1.6px) brightness(0.8);
+}
+.card:hover,
+.card:focus-within {
+  transform: translateY(-24px) scale(1.05);
+  z-index: 5;
+  border-color: rgba(200, 214, 202, 0.24);
+  background: rgba(11, 18, 15, 0.66);
+}
+.card:hover .card__glyph,
+.card:focus-within .card__glyph {
+  opacity: 0.46;
+}
+.card:hover .card__text,
+.card:focus-within .card__text {
+  color: var(--arr-ink);
+}
+.card:focus-visible {
+  outline: 1px solid color-mix(in srgb, var(--arr-ember) 55%, transparent);
+  outline-offset: 4px;
+}
+
+/* ---------- reduced motion ---------- */
 @media (prefers-reduced-motion: reduce) {
   .arrival {
     padding: 12vh max(7vw, 22px);
   }
-  .arrival__shell,
-  .hep--1,
-  .hep--2,
-  .arrival__fog--a,
-  .arrival__fog--b,
-  .arrival__glyph {
-    animation: none;
-  }
-  .arrival__content {
+  .cards {
     position: relative;
     left: auto;
-    top: auto;
-    width: min(42rem, 100%);
-    transform: none;
-    gap: 1.4em;
-    margin-top: 3rem;
-  }
-  .arrival__glyph {
-    left: 50%;
     right: auto;
-    width: 80%;
-    transform: translate(-50%, -50%);
-    opacity: 0.16;
+    top: auto;
+    transform: none;
+    flex-direction: column;
+    max-width: 44rem;
+    margin-top: 3rem;
+    gap: 1.5rem;
+  }
+  .card,
+  .card:nth-child(1),
+  .card:nth-child(2),
+  .card:nth-child(3) {
+    max-width: none;
+    transform: none;
+    transition: none;
+  }
+  .card__text {
+    color: var(--arr-ink);
   }
 }
 
 /* ---------- portrait / small frame ---------- */
 @media (max-width: 700px), (orientation: portrait) {
-  .arrival__glyph {
-    right: auto;
-    left: 50%;
-    top: 8%;
-    width: 34%;
-    transform: translate(-50%, 0);
-    opacity: 0.5;
-    -webkit-mask-image: radial-gradient(circle at 50% 50%, #000 58%, transparent 82%);
-    mask-image: radial-gradient(circle at 50% 50%, #000 58%, transparent 82%);
+  .arrival {
+    overflow-y: auto;
+    overflow-x: hidden;
   }
   .arrival__eyebrow {
     top: 4%;
+    flex-direction: column;
+    gap: 0.3em;
   }
-  .arrival__content {
-    left: 8%;
-    right: 8%;
-    top: 27%;
-    bottom: 6%;
-    width: auto;
+  .cards {
+    position: absolute;
+    left: 6%;
+    right: 6%;
+    top: 13%;
+    bottom: 4%;
     transform: none;
+    flex-direction: column;
     justify-content: center;
-    gap: 0.85em;
+    gap: 12px;
   }
-  .arrival__content p {
-    font-size: clamp(0.8rem, 3.9cqw, 0.94rem);
+  .card,
+  .card:nth-child(1),
+  .card:nth-child(2),
+  .card:nth-child(3) {
+    max-width: none;
+    transform: none;
+    padding: 14px 16px;
+  }
+  .card__glyph {
+    right: -30%;
+    width: 66%;
+    opacity: 0.1;
+  }
+  .card__text {
+    font-size: clamp(0.74rem, 3.7cqw, 0.86rem);
     line-height: 1.5;
+    color: color-mix(in srgb, var(--arr-ink) 88%, transparent);
   }
-  .arrival__shell {
-    right: -60%;
-    width: 84%;
+  /* no hover on touch — keep them all legible, tap just lifts one */
+  .cards:hover .card:not(:hover):not(:focus-within),
+  .cards:focus-within .card:not(:hover):not(:focus-within) {
+    opacity: 0.7;
+    filter: none;
   }
-  .hep--2 {
-    display: none;
+  .card:hover,
+  .card:focus-within {
+    transform: scale(1.02);
   }
 }
