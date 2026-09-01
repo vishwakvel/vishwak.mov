@@ -1,10 +1,14 @@
 import { useEffect, type RefObject } from 'react'
 import { gsap } from 'gsap'
 
+const pad = (n: number, w: number) => String(n).padStart(w, '0')
+const WIDE_RATIO = 2.39 // the letterbox we crop to before the IMAX unfurl
+
 /**
  * The IMAX 15/70 boot-up. A xenon strike, a non-linear lamp warm-up, the frame
- * masking to the true 1.43:1 ratio, then the title card cut in on a frame line.
- * The edge-code readout doubles as the load/frame counter.
+ * masking to a 2.39:1 letterbox then unfurling to the true 1.43:1 IMAX ratio,
+ * the film advancing through the gate and locking, then the title card cutting
+ * in on a frame line. The keykode edge stamp doubles as the load counter.
  */
 export function useBootSequence(root: RefObject<HTMLElement | null>) {
   useEffect(() => {
@@ -14,13 +18,33 @@ export function useBootSequence(root: RefObject<HTMLElement | null>) {
     const q = gsap.utils.selector(el)
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
+    const gate = q('.gate')[0] as HTMLElement | undefined
+    const inner = q('.gate-inner')[0] as HTMLElement | undefined
     const counter = q('[data-counter]')[0] as HTMLElement | undefined
     const edgenum = q('[data-edgenum]')[0] as HTMLElement | undefined
     const head = q('[data-head]')[0] as HTMLElement | undefined
 
+    // --- mask: clip the gate from fullscreen -> 2.39 letterbox -> 1.43 frame ---
+    let m = reduced ? 1 : 0 // 0..1 crop to letterbox
+    let e = reduced ? 1 : 0 // 0..1 unfurl letterbox -> IMAX
+    const applyMask = () => {
+      if (!gate || !inner) return
+      const vw = window.innerWidth
+      const vh = window.innerHeight
+      const fw = inner.offsetWidth
+      const fh = inner.offsetHeight
+      const ixFull = (vw - fw) / 2
+      const iyWide = (vh - fw / WIDE_RATIO) / 2
+      const iyFull = (vh - fh) / 2
+      const ix = ixFull * m
+      const iy = iyWide * m + (iyFull - iyWide) * e
+      gate.style.clipPath = `inset(${Math.max(0, iy)}px ${Math.max(0, ix)}px)`
+    }
+    applyMask()
+    window.addEventListener('resize', applyMask)
+
     const setEdge = (foot: number, frame: number) => {
-      if (!edgenum) return
-      edgenum.textContent = `VV 70 2026 ${String(foot).padStart(4, '0')}+${String(frame).padStart(2, '0')}`
+      if (edgenum) edgenum.textContent = `VV 70 · 2026 · ${pad(foot, 4)}+${pad(frame, 2)} · KODAK 2383`
     }
     setEdge(0, 0)
 
@@ -31,18 +55,21 @@ export function useBootSequence(root: RefObject<HTMLElement | null>) {
     }
 
     if (reduced) {
-      gsap.set(el, { '--m': 1, '--e': 1 })
       gsap.set(q('.lamp'), { opacity: 1 })
-      gsap.set(q('.grain'), { opacity: 0.12 })
-      gsap.set(q('.edgecode, .framemark, [data-titlecard], .leader, [data-aspect]'), {
-        opacity: 1,
-      })
+      gsap.set(q('.grain'), { opacity: 0.17 })
+      gsap.set(q('.strip, .framemark, [data-titlecard], .leader, [data-aspect]'), { opacity: 1 })
       settle()
-      return
+      return () => window.removeEventListener('resize', applyMask)
     }
 
     const ctx = gsap.context(() => {
       const tl = gsap.timeline({ defaults: { ease: 'power2.out' } })
+      const mask = { m: 0, e: 0 }
+      const syncMask = () => {
+        m = mask.m
+        e = mask.e
+        applyMask()
+      }
 
       // 1 — xenon strike (ignition overshoot, then decay)
       tl.fromTo('.flash', { opacity: 0 }, { opacity: 1, duration: 0.12, ease: 'power4.in' }, 0.25)
@@ -52,32 +79,40 @@ export function useBootSequence(root: RefObject<HTMLElement | null>) {
       // 2 — lamp warm-up: non-linear ramp to steady output
       tl.fromTo('.lamp', { opacity: 0 }, { opacity: 1, duration: 1.7, ease: 'expo.out' }, 0.32)
 
-      // 3 — mask crops to a 2.39:1 letterbox, holds, then unfurls to true 1.43:1
-      tl.fromTo(el, { '--m': 0 }, { '--m': 1, duration: 0.55, ease: 'power3.inOut' }, 0.5)
-        .fromTo(el, { '--e': 0 }, { '--e': 1, duration: 0.8, ease: 'power2.inOut' }, 1.15)
+      // 3 — mask crops to a 2.39:1 letterbox, then unfurls to true 1.43:1
+      tl.to(mask, { m: 1, duration: 0.55, ease: 'power3.inOut', onUpdate: syncMask }, 0.5)
+        .to(mask, { e: 1, duration: 0.8, ease: 'power2.inOut', onUpdate: syncMask }, 1.15)
 
-      // 4 — frame furniture resolves in
-      tl.to('.grain', { opacity: 0.12, duration: 1.2 }, 1.5)
-        .to('[data-aspect]', { opacity: 1, duration: 0.5 }, 1.6)
+      // 4 — frame + strip furniture resolve in
+      tl.to('.grain', { opacity: 0.17, duration: 1.2 }, 1.5)
+        .to('.strip', { opacity: 1, duration: 0.6 }, 1.55)
+        .to('[data-aspect]', { opacity: 1, duration: 0.5 }, 1.65)
         .to('.framemark', { opacity: 1, duration: 0.5, stagger: 0.06 }, 1.7)
-        .to('.edgecode', { opacity: 1, duration: 0.5 }, 1.75)
 
-      // 5 — edge-code counts up while assets "thread through the gate"
+      // 5 — edge stamp counts up while the film threads through
       const tick = { p: 0 }
       tl.to(tick, {
         p: 1,
-        duration: 1.5,
+        duration: 1.4,
         ease: 'none',
         onUpdate: () => setEdge(1 + Math.floor(tick.p * 136), Math.floor(tick.p * 24) % 24),
-      }, 1.5)
+      }, 1.6)
 
-      // 6 — title card: hard cut in on a frame line
-      tl.set('[data-titlecard]', { opacity: 1 }, 3.05)
-        .fromTo('[data-titlecard]', { scale: 1.01 }, { scale: 1, duration: 0.1, ease: 'none' }, 3.05)
-        .add(settle, 3.05)
+      // 6 — the film advances and locks into the gate
+      tl.fromTo(
+        '[data-run]',
+        { xPercent: 26, filter: 'blur(6px)' },
+        { xPercent: 0, filter: 'blur(0px)', duration: 0.75, ease: 'power3.out' },
+        2.3,
+      ).to('[data-run]', { xPercent: -1, duration: 0.06, yoyo: true, repeat: 3, ease: 'none' }, 3.0)
 
-      // 7 — leader-print links
-      tl.to('.leader', { opacity: 1, duration: 0.6 }, 3.4)
+      // 7 — title card: hard cut in on a frame line
+      tl.set('[data-titlecard]', { opacity: 1 }, 3.1)
+        .fromTo('[data-titlecard]', { scale: 1.01 }, { scale: 1, duration: 0.1, ease: 'none' }, 3.1)
+        .add(settle, 3.1)
+
+      // 8 — leader-print links
+      tl.to('.leader', { opacity: 1, duration: 0.6 }, 3.45)
 
       // ambient: a very low-amplitude lamp flicker once warm
       const flick = gsap.fromTo(
@@ -87,8 +122,7 @@ export function useBootSequence(root: RefObject<HTMLElement | null>) {
       )
       tl.add(() => flick.play(), 2)
 
-      // ambient: gate weave — a few hundred microns of frame drift
-      const inner = q('.gate-inner')[0] as HTMLElement | undefined
+      // ambient: gate weave — a few hundred microns of frame drift, once locked
       let raf = 0
       let t = 0
       const weave = () => {
@@ -101,7 +135,7 @@ export function useBootSequence(root: RefObject<HTMLElement | null>) {
       }
       tl.add(() => {
         raf = requestAnimationFrame(weave)
-      }, 1.6)
+      }, 3.1)
 
       // let people skip the ceremony
       const skip = () => tl.progress(1)
@@ -116,6 +150,9 @@ export function useBootSequence(root: RefObject<HTMLElement | null>) {
       }
     }, el)
 
-    return () => ctx.revert()
+    return () => {
+      window.removeEventListener('resize', applyMask)
+      ctx.revert()
+    }
   }, [root])
 }

@@ -8,16 +8,13 @@
   --edge-amber: #e4a140;
   --steel: #7a828e;
 
-  /* true IMAX 15/70 frame: 1.43:1 — nearly square next to 2.39 cinema */
-  --frame-w: min(93vw, calc(92svh * 1.43));
-  --frame-h: calc(var(--frame-w) / 1.43);
+  /* true IMAX 15/70 frame: 1.43:1. Height-first so the letterbox bars always
+     have room for the sprocket rows and edge stamp. */
+  --frame-h: min(78svh, calc(94vw / 1.43));
+  --frame-w: calc(var(--frame-h) * 1.43);
 
-  --font-display: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Cinzel", "Times New Roman", Georgia, serif;
   --font-mono: "Space Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
-
-  /* animation drivers (set by the boot sequence) */
-  --m: 0;
-  --e: 0;
 
   color-scheme: dark;
 }

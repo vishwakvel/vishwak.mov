@@ -3,11 +3,13 @@ import FilmGrain from './FilmGrain'
 import { useBootSequence } from './useBootSequence'
 import './Landing.css'
 
-// TODO(vishwak): confirm these — GitHub is from the repo owner, LinkedIn is a placeholder.
+// TODO(vishwak): LinkedIn URL is a placeholder. GitHub is the repo owner.
 const GITHUB = 'https://github.com/vishwakvel'
 const LINKEDIN = '#'
 
-const PERF_COUNT = 20
+// IMAX is 15/70 — 15 perforations per frame edge.
+const PERFS_PER_FRAME = 15
+const SPROCKET_RUN = PERFS_PER_FRAME * 2
 
 export default function Landing() {
   const root = useRef<HTMLDivElement>(null)
@@ -16,6 +18,34 @@ export default function Landing() {
   return (
     <main className="reel" ref={root}>
       <div className="flash" aria-hidden="true" />
+
+      {/* filmstrip furniture, in the surround so the mask never clips it */}
+      <div className="strip" aria-hidden="true">
+        <div className="strip__base" />
+        <div className="strip__adjacent strip__adjacent--prev" />
+        <div className="strip__adjacent strip__adjacent--next" />
+        <div className="strip__frameline strip__frameline--l" />
+        <div className="strip__frameline strip__frameline--r" />
+
+        <div className="sprockets sprockets--top">
+          <div className="sprockets__run" data-run>
+            {Array.from({ length: SPROCKET_RUN }).map((_, i) => (
+              <i key={i} />
+            ))}
+          </div>
+        </div>
+        <div className="sprockets sprockets--bottom">
+          <div className="sprockets__run" data-run>
+            {Array.from({ length: SPROCKET_RUN }).map((_, i) => (
+              <i key={i} />
+            ))}
+          </div>
+        </div>
+
+        <span className="strip__stamp" data-edgenum>
+          VV 70 · 2026 · 0000+00 · KODAK 2383
+        </span>
+      </div>
 
       <div className="gate">
         <div className="lamp" aria-hidden="true" />
@@ -26,30 +56,12 @@ export default function Landing() {
           <div className="framemark framemark--tr" aria-hidden="true" />
           <div className="framemark framemark--br" aria-hidden="true" />
 
-          <div className="edgecode" aria-hidden="true">
-            <div className="perfs">
-              {Array.from({ length: PERF_COUNT }).map((_, i) => (
-                <i key={i} />
-              ))}
-            </div>
-            <span className="edgenum" data-edgenum>
-              VV 70 2026 0000+00
-            </span>
-          </div>
-
           <div className="titlecard" data-titlecard>
             <h1>
               <span>Vishwak</span>
               <span>Velamuri</span>
             </h1>
             <div className="titlecard__rule" />
-            <p className="titlecard__role">
-              CS + Mathematics
-              <span className="dot">·</span>
-              Computational Finance
-              <span className="dot">·</span>
-              University of Maryland
-            </p>
           </div>
 
           <nav className="leader" aria-label="Elsewhere">
@@ -78,7 +90,7 @@ export default function Landing() {
       </div>
 
       <noscript>
-        <p className="noscript">Vishwak Velamuri — CS + Mathematics, University of Maryland.</p>
+        <p className="noscript">Vishwak Velamuri</p>
       </noscript>
     </main>
   )

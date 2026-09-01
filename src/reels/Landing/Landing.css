@@ -2,8 +2,19 @@
   position: fixed;
   inset: 0;
   overflow: hidden;
-  background: var(--reel-black);
   isolation: isolate;
+  /* the surround: a darkened booth, not flat #000 */
+  background: radial-gradient(125% 95% at 50% 40%, #111118 0%, #0b0b0f 46%, #070709 100%);
+}
+/* faint fixed grain over the whole surround */
+.reel::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.04;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 .reel::after {
   content: "";
@@ -11,7 +22,7 @@
   inset: 0;
   z-index: 30;
   pointer-events: none;
-  background: radial-gradient(130% 100% at 50% 50%, transparent 58%, rgba(0, 0, 0, 0.55) 100%);
+  background: radial-gradient(135% 105% at 50% 48%, transparent 55%, rgba(0, 0, 0, 0.62) 100%);
 }
 
 /* ---------- xenon strike ---------- */
@@ -30,18 +41,122 @@
   will-change: opacity;
 }
 
+/* ---------- filmstrip furniture (surround) ----------
+   A vertical strip of 70mm running down the screen: a lighter film base band,
+   sprocket rows top and bottom, this frame punched in the middle, slivers of
+   the neighbouring frames either side. */
+.strip {
+  --sliver: clamp(18px, 2.8vw, 38px);
+  position: absolute;
+  inset: 0;
+  z-index: 8;
+  pointer-events: none;
+  opacity: 0;
+}
+
+.strip__base {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: calc(50% - var(--frame-w) / 2 - var(--sliver));
+  width: calc(var(--frame-w) + 2 * var(--sliver));
+  background: linear-gradient(
+    90deg,
+    #0c0d11 0%,
+    #14151b 6%,
+    #14151b 94%,
+    #0c0d11 100%
+  );
+  box-shadow: 0 0 60px 8px rgba(0, 0, 0, 0.55);
+}
+
+/* slivers of the neighbouring frames */
+.strip__adjacent {
+  position: absolute;
+  top: calc(50% - var(--frame-h) / 2);
+  height: var(--frame-h);
+  width: var(--sliver);
+  background: linear-gradient(#191a21, #101117);
+}
+.strip__adjacent--prev {
+  right: calc(50% + var(--frame-w) / 2);
+  box-shadow: inset -16px 0 24px rgba(0, 0, 0, 0.55);
+}
+.strip__adjacent--next {
+  left: calc(50% + var(--frame-w) / 2);
+  box-shadow: inset 16px 0 24px rgba(0, 0, 0, 0.55);
+}
+
+/* frame lines where this frame meets its neighbours */
+.strip__frameline {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: rgba(237, 239, 242, 0.1);
+}
+.strip__frameline--l {
+  left: calc(50% - var(--frame-w) / 2);
+}
+.strip__frameline--r {
+  left: calc(50% + var(--frame-w) / 2);
+}
+
+/* sprocket rows in the letterbox bars */
+.sprockets {
+  position: absolute;
+  left: calc(50% - var(--frame-w) / 2);
+  width: var(--frame-w);
+  height: clamp(17px, 2.4vh, 27px);
+  overflow: hidden;
+  background: rgba(0, 0, 0, 0.28);
+}
+.sprockets--top {
+  bottom: calc(50% + var(--frame-h) / 2 + 7px);
+}
+.sprockets--bottom {
+  top: calc(50% + var(--frame-h) / 2 + 7px);
+}
+.sprockets__run {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 200%;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+.sprockets__run i {
+  width: clamp(13px, 1.5vw, 22px);
+  height: clamp(8px, 1vh, 11px);
+  border-radius: 2.5px;
+  background: rgba(242, 243, 247, 0.34);
+  box-shadow:
+    inset 0 0 0 1px rgba(0, 0, 0, 0.6),
+    0 0 4px rgba(242, 243, 247, 0.18);
+}
+
+.strip__stamp {
+  position: absolute;
+  left: calc(50% - var(--frame-w) / 2 + 2px);
+  top: calc(50% + var(--frame-h) / 2 + 44px);
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.2em;
+  color: var(--edge-amber);
+  opacity: 0.9;
+  white-space: nowrap;
+}
+
 /* ---------- the gate: full viewport, masked down to 1.43:1 ---------- */
 .gate {
   position: absolute;
   inset: 0;
   z-index: 10;
   background: var(--reel-black);
-  /* --m: crop fullscreen -> 2.39:1 letterbox. --e: unfurl 2.39 -> true 1.43 IMAX */
-  --iy-wide: calc((100svh - var(--frame-w) / 2.39) / 2);
-  --iy-full: calc((100svh - var(--frame-h)) / 2);
-  --ix: calc((100vw - var(--frame-w)) / 2 * var(--m));
-  --iy: calc(var(--iy-wide) * var(--m) - (var(--iy-wide) - var(--iy-full)) * var(--e));
-  clip-path: inset(max(0px, var(--iy)) var(--ix));
+  /* clip-path is driven imperatively by useBootSequence (pixel insets) */
+  clip-path: inset(0 0);
 }
 
 .lamp {
@@ -49,8 +164,9 @@
   inset: -12%;
   opacity: 0;
   background:
-    radial-gradient(58% 46% at 50% 40%, rgba(241, 228, 207, 0.07), transparent 72%),
-    radial-gradient(120% 96% at 50% 44%, #2b2e37 0%, #16171d 54%, #0a0a0b 100%);
+    radial-gradient(34% 30% at 51% 38%, rgba(241, 228, 207, 0.12), transparent 70%),
+    radial-gradient(58% 46% at 50% 42%, rgba(120, 132, 150, 0.1), transparent 74%),
+    radial-gradient(120% 96% at 50% 46%, #2d3039 0%, #17181e 52%, #0a0a0b 100%);
   will-change: opacity;
 }
 
@@ -87,11 +203,11 @@
   justify-content: center;
   color: var(--xenon);
   box-shadow:
-    inset 0 0 0 1px rgba(237, 239, 242, 0.11),
-    inset 0 0 80px 4px rgba(0, 0, 0, 0.45);
+    inset 0 0 0 1px rgba(237, 239, 242, 0.12),
+    inset 0 0 80px 4px rgba(0, 0, 0, 0.42);
 }
 
-/* ---------- registration / framing marks ---------- */
+/* registration / framing marks */
 .framemark {
   position: absolute;
   width: 20px;
@@ -99,23 +215,11 @@
   opacity: 0;
   border: 1px solid color-mix(in srgb, var(--edge-amber) 50%, transparent);
 }
-.framemark--tl {
-  top: 2.4vmin;
-  left: 2.4vmin;
-  border-right: 0;
-  border-bottom: 0;
-}
 .framemark--tr {
   top: 2.4vmin;
   right: 2.4vmin;
   border-left: 0;
   border-bottom: 0;
-}
-.framemark--bl {
-  bottom: 2.4vmin;
-  left: 2.4vmin;
-  border-right: 0;
-  border-top: 0;
 }
 .framemark--br {
   bottom: 2.4vmin;
@@ -124,84 +228,31 @@
   border-top: 0;
 }
 
-/* ---------- edge code strip (also the load / frame counter) ---------- */
-.edgecode {
-  position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  width: clamp(40px, 5vmin, 58px);
-  opacity: 0;
-  border-right: 1px solid rgba(237, 239, 242, 0.06);
-}
-.perfs {
-  position: absolute;
-  top: 16px;
-  bottom: 16px;
-  left: 9px;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: space-between;
-}
-.perfs i {
-  width: 13px;
-  height: 8px;
-  border-radius: 2.5px;
-  background: rgba(237, 239, 242, 0.1);
-}
-.edgenum {
-  position: absolute;
-  right: 7px;
-  top: 16px;
-  writing-mode: vertical-rl;
-  text-orientation: mixed;
-  font-family: var(--font-mono);
-  font-size: 9px;
-  letter-spacing: 0.28em;
-  color: var(--edge-amber);
-  opacity: 0.78;
-  white-space: nowrap;
-  user-select: none;
-}
-
 /* ---------- title card ---------- */
 .titlecard {
   opacity: 0;
   text-align: center;
-  padding: 0 12%;
+  padding: 0 10%;
 }
 .titlecard h1 {
   margin: 0;
   display: flex;
   flex-direction: column;
+  gap: 0.08em;
   font-family: var(--font-display);
-  font-weight: 400;
-  font-size: clamp(2rem, 6.4vw, 4.15rem);
-  line-height: 1.04;
-  letter-spacing: 0.07em;
+  font-weight: 500;
+  font-size: clamp(2rem, 6vw, 4rem);
+  line-height: 1.08;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
-  text-indent: 0.07em;
   color: var(--xenon);
+  text-shadow: 0 0 34px rgba(241, 228, 207, 0.12);
 }
 .titlecard__rule {
-  width: 40px;
+  width: 38px;
   height: 1px;
-  margin: clamp(16px, 3vh, 30px) auto;
+  margin: clamp(18px, 3.2vh, 32px) auto 0;
   background: color-mix(in srgb, var(--edge-amber) 75%, transparent);
-}
-.titlecard__role {
-  margin: 0;
-  font-family: var(--font-mono);
-  font-size: clamp(0.58rem, 1.4vw, 0.76rem);
-  letter-spacing: 0.24em;
-  text-transform: uppercase;
-  color: color-mix(in srgb, var(--xenon) 52%, var(--steel));
-  line-height: 2;
-}
-.titlecard__role .dot {
-  margin: 0 0.55em;
-  color: color-mix(in srgb, var(--edge-amber) 55%, transparent);
 }
 
 /* ---------- leader-print links ---------- */
@@ -209,7 +260,7 @@
   position: absolute;
   left: 0;
   right: 0;
-  bottom: clamp(16px, 3.6vh, 34px);
+  bottom: clamp(20px, 4.4vh, 42px);
   display: flex;
   gap: 14px;
   align-items: center;
@@ -222,7 +273,7 @@
   letter-spacing: 0.26em;
   text-transform: uppercase;
   text-decoration: none;
-  color: color-mix(in srgb, var(--xenon) 60%, transparent);
+  color: color-mix(in srgb, var(--xenon) 58%, transparent);
   padding: 6px 4px;
   transition: color 0.25s ease;
 }
@@ -247,8 +298,8 @@
 .aspect-label {
   position: absolute;
   z-index: 12;
-  top: calc(50% - var(--frame-h) / 2 - 24px);
-  right: calc(50% - var(--frame-w) / 2);
+  top: calc(50% - var(--frame-h) / 2 - 46px);
+  right: calc(50% - var(--frame-w) / 2 + 2px);
   margin: 0;
   font-family: var(--font-mono);
   font-size: 10px;
@@ -286,13 +337,12 @@
   inset: 0;
   display: grid;
   place-content: center;
-  padding: 8vw;
-  text-align: center;
-  font-family: var(--font-mono);
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
   color: var(--xenon);
 }
 
-/* ---------- reduced motion: resolve straight to the composed frame ---------- */
 @media (prefers-reduced-motion: reduce) {
   .flash,
   .flicker {
@@ -300,48 +350,33 @@
   }
 }
 
-/* ---------- portrait / small screens ----------
-   A 1.43:1 box on a tall phone is a useless sliver, so portrait keeps the
-   letterbox *language* (bars, grain, edge code) in a near-full-height frame
-   and skips the 2.39 -> 1.43 unfurl (nothing to unfurl into). */
+/* ---------- portrait / small screens ---------- */
 @media (max-width: 700px), (orientation: portrait) {
   :root {
     --frame-w: 92vw;
-    --frame-h: 88svh;
+    --frame-h: min(82svh, calc(92vw / 0.62));
   }
   .gate {
     --iy-wide: var(--iy-full);
+  }
+  .strip__adjacent {
+    display: none;
   }
   .titlecard {
     padding: 0 6%;
   }
   .titlecard h1 {
-    font-size: clamp(1.85rem, 8.6vw, 2.9rem);
-    letter-spacing: 0.04em;
+    font-size: clamp(1.7rem, 8.4vw, 2.7rem);
   }
-  .titlecard__role {
-    font-size: 0.55rem;
-    letter-spacing: 0.15em;
-    line-height: 2.1;
-  }
-  .edgecode {
-    width: 28px;
-  }
-  .perfs {
-    left: 6px;
-  }
-  .perfs i {
-    width: 10px;
-  }
-  .edgenum {
-    font-size: 7.5px;
+  .strip__stamp {
+    font-size: 8px;
     letter-spacing: 0.16em;
   }
   .leader {
-    bottom: 12px;
+    bottom: 16px;
   }
   .aspect-label {
-    top: calc(50% - var(--frame-h) / 2 - 20px);
+    top: calc(50% - var(--frame-h) / 2 - 44px);
     right: 50%;
     transform: translateX(50%);
   }
