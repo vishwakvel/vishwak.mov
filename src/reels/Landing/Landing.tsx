@@ -3,9 +3,8 @@ import FilmGrain from './FilmGrain'
 import { useBootSequence } from './useBootSequence'
 import './Landing.css'
 
-// TODO(vishwak): LinkedIn URL is a placeholder. GitHub is the repo owner.
 const GITHUB = 'https://github.com/vishwakvel'
-const LINKEDIN = '#'
+const LINKEDIN = 'https://linkedin.com/in/vishwakv'
 
 // IMAX is 15/70 — 15 perforations per frame edge.
 const PERFS_PER_FRAME = 15
