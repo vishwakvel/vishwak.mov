@@ -1,14 +1,28 @@
-import { useRef } from 'react'
-import Logogram, { type LogogramHandle } from './Logogram'
-import { useArrivalScroll } from './useArrivalScroll'
+import { useEffect, useRef } from 'react'
+import { gsap } from 'gsap'
+import glyph from './assets/glyph.webp'
 import './Arrival.css'
 
-/** Reel 02 — Arrival. Projected into the frame: the barrier, fog and heptapod
- *  logogram, with the about-me arriving in three movements. */
+/** Reel 02 — Arrival. One screen, projected into the frame: the language lit
+ *  against the gloom, and the about-me in three short movements. */
 export default function Arrival() {
   const root = useRef<HTMLDivElement>(null)
-  const hero = useRef<LogogramHandle>(null)
-  useArrivalScroll(root, hero)
+
+  useEffect(() => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+    const el = root.current
+    if (!el) return
+    const g = el.querySelector<HTMLElement>('.arrival__glyph')
+    if (!g) return
+
+    const onMove = (e: PointerEvent) => {
+      const dx = (e.clientX / window.innerWidth - 0.5) * 16
+      const dy = (e.clientY / window.innerHeight - 0.5) * 16
+      gsap.to(g, { x: dx, y: dy, duration: 1.4, ease: 'power2.out' })
+    }
+    window.addEventListener('pointermove', onMove, { passive: true })
+    return () => window.removeEventListener('pointermove', onMove)
+  }, [])
 
   return (
     <div className="arrival" data-reel-content="arrival" ref={root}>
@@ -21,43 +35,30 @@ export default function Arrival() {
       <div className="arrival__fog arrival__fog--a" aria-hidden="true" />
       <div className="arrival__fog arrival__fog--b" aria-hidden="true" />
 
-      <Logogram ref={hero} className="arrival__glyph" seed={41} blooms={14} interactive />
+      <img className="arrival__glyph" src={glyph} alt="" aria-hidden="true" />
 
       <p className="arrival__eyebrow">Transmission 001 — About</p>
 
       <div className="arrival__content">
-        <article className="movement" data-mv="1">
-          <Logogram className="movement__mark" seed={11} blooms={3} autoDraw />
-          <p>
-            Hey, I'm Vishwak! I'm from Raleigh, North Carolina, and I'm now at the
-            University of Maryland, getting my dual degree in Computer Science and
-            Mathematics with a minor in Computational Finance, and I'm part of the
-            ACES (Advanced Cybersecurity Experience for Students) honors program.
-          </p>
-        </article>
-
-        <article className="movement" data-mv="2">
-          <Logogram className="movement__mark" seed={23} blooms={4} autoDraw />
-          <p>
-            I'm drawn to computational modeling and machine learning, especially
-            the process of taking large, messy, complex datasets and finding the
-            structure hiding inside them. I work across the stack, from the math
-            itself to the models built on top of it &mdash; boosting, Bayesian
-            methods, survival analysis, neural nets, and most recently
-            reinforcement learning, which has become my newest focus.
-          </p>
-        </article>
-
-        <article className="movement" data-mv="3">
-          <Logogram className="movement__mark" seed={37} blooms={4} autoDraw />
-          <p>
-            I'm also deep into game theory and how it plays out in markets:
-            options pricing, sell-side quant, market making, volatility modeling.
-            I like it because the math only works if you're accounting for the
-            fact that the market is other people reacting to your own moves in
-            real time.
-          </p>
-        </article>
+        <p>
+          Hey, I'm Vishwak &mdash; from Raleigh, North Carolina, now at the
+          University of Maryland for a dual degree in Computer Science and
+          Mathematics, a minor in Computational Finance, and the ACES
+          cybersecurity honors program.
+        </p>
+        <p>
+          I'm drawn to computational modeling and machine learning: taking large,
+          messy datasets and finding the structure hiding inside them. I work
+          across the stack, from the math to the models on top of it &mdash;
+          boosting, Bayesian methods, survival analysis, neural nets, and lately
+          reinforcement learning, my newest focus.
+        </p>
+        <p>
+          I'm also deep in game theory and how it plays out in markets &mdash;
+          options pricing, sell-side quant, market making, volatility modeling.
+          The math only works if you're accounting for the market being other
+          people reacting to your own moves in real time.
+        </p>
       </div>
     </div>
   )

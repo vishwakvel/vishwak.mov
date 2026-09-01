@@ -1,75 +1,67 @@
-/* Reel 02 — Arrival. Everything is composed inside the 70mm frame
-   (.arrival is sized to .gate-screen by Frame.css). */
+/* Reel 02 — Arrival. One screen inside the 70mm frame: gloomy grey-green,
+   the language lit against the dark. (.arrival is sized to .gate-screen.) */
 
 .arrival {
   color: var(--arr-ink);
-  background: var(--arr-deep);
+  background: var(--arr-void);
   container-type: size;
 }
 
-/* ---------- the barrier: luminous fog, dark at the edges ---------- */
 .arrival__sky {
   position: absolute;
   inset: 0;
-  background: radial-gradient(
-    68% 60% at 38% 44%,
-    #d3d8d2 0%,
-    var(--arr-fog-hi) 26%,
-    var(--arr-fog) 48%,
-    var(--arr-slate) 76%,
-    #1b2221 100%
-  );
+  background:
+    radial-gradient(42% 52% at 30% 46%, rgba(126, 142, 130, 0.14), transparent 72%),
+    radial-gradient(95% 85% at 44% 44%, #29332e 0%, #1a231f 44%, #0b1210 100%);
+}
+.arrival__sky::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(120% 100% at 50% 48%, transparent 46%, rgba(0, 0, 0, 0.6) 100%);
 }
 
-/* ---------- the shell, looming off the right edge of the frame ---------- */
+/* the shell, a dark mass off the frame's right edge */
 .arrival__shell {
   position: absolute;
-  right: -22%;
+  right: -36%;
   top: -28%;
-  width: 44%;
+  width: 48%;
   height: 156%;
   border-radius: 50%;
-  background: linear-gradient(
-    98deg,
-    transparent 0%,
-    rgba(12, 17, 16, 0.32) 12%,
-    #131b19 36%,
-    #1e2624 100%
-  );
-  box-shadow: inset 50px 0 120px rgba(0, 0, 0, 0.5);
+  background: linear-gradient(98deg, transparent 0%, rgba(8, 12, 11, 0.4) 14%, #0a1210 40%, #101a17 100%);
+  box-shadow: inset 46px 0 120px rgba(0, 0, 0, 0.55);
 }
 
-/* ---------- heptapod silhouettes in the mist ---------- */
+/* faint figures caught in the work-light */
 .arrival__silhouettes .hep {
   position: absolute;
-  background: radial-gradient(54% 42% at 50% 30%, #0d1211 0%, rgba(15, 20, 20, 0.6) 46%, transparent 74%);
+  background: radial-gradient(50% 40% at 50% 32%, rgba(122, 140, 129, 0.17), transparent 66%);
 }
 .hep--1 {
-  left: 0%;
-  top: -8%;
-  width: 28%;
-  height: 130%;
-  border-radius: 42% 58% 44% 56% / 34% 32% 68% 66%;
-  filter: blur(12px);
-  opacity: 0.72;
-  animation: hep-drift-a 26s ease-in-out infinite alternate;
+  left: 4%;
+  top: -6%;
+  width: 24%;
+  height: 128%;
+  filter: blur(20px);
+  opacity: 0.8;
+  animation: hep-drift-a 28s ease-in-out infinite alternate;
 }
 .hep--2 {
-  left: 50%;
-  top: 8%;
-  width: 17%;
-  height: 80%;
-  border-radius: 52% 48% 40% 60% / 40% 38% 62% 60%;
-  filter: blur(18px);
-  opacity: 0.52;
-  animation: hep-drift-b 33s ease-in-out infinite alternate;
+  left: 44%;
+  top: 6%;
+  width: 15%;
+  height: 82%;
+  filter: blur(26px);
+  opacity: 0.55;
+  animation: hep-drift-b 34s ease-in-out infinite alternate;
 }
 @keyframes hep-drift-a {
   from {
     transform: translate3d(0, 0, 0) scale(1);
   }
   to {
-    transform: translate3d(2%, -4%, 0) scale(1.04);
+    transform: translate3d(2%, -4%, 0) scale(1.05);
   }
 }
 @keyframes hep-drift-b {
@@ -81,100 +73,98 @@
   }
 }
 
-/* ---------- drifting fog banks ---------- */
 .arrival__fog {
   position: absolute;
   inset: -20% -30%;
   pointer-events: none;
 }
 .arrival__fog--a {
-  background: radial-gradient(50% 100% at 30% 50%, rgba(222, 227, 222, 0.22), transparent 68%);
-  animation: fog-a 34s linear infinite;
+  background: radial-gradient(48% 100% at 32% 50%, rgba(130, 146, 136, 0.07), transparent 66%);
+  animation: fog-a 40s linear infinite;
 }
 .arrival__fog--b {
-  background: radial-gradient(46% 100% at 70% 60%, rgba(200, 208, 204, 0.16), transparent 66%);
-  animation: fog-b 46s linear infinite;
+  background: radial-gradient(44% 100% at 70% 58%, rgba(110, 126, 118, 0.06), transparent 64%);
+  animation: fog-b 52s linear infinite;
 }
 @keyframes fog-a {
   from {
-    transform: translateX(-10%);
+    transform: translateX(-9%);
   }
   to {
-    transform: translateX(10%);
+    transform: translateX(9%);
   }
 }
 @keyframes fog-b {
   from {
-    transform: translateX(8%);
+    transform: translateX(7%);
   }
   to {
-    transform: translateX(-12%);
+    transform: translateX(-11%);
   }
 }
 
-/* ---------- the hero logogram ---------- */
+/* the logogram — lit ink against the gloom */
 .arrival__glyph {
   position: absolute;
-  left: 68%;
-  top: 45%;
-  width: 41%;
-  aspect-ratio: 1;
-  transform: translate(-50%, -50%);
+  right: 2%;
+  top: 50%;
+  width: 50%;
+  transform: translateY(-50%);
   z-index: 3;
   pointer-events: none;
-  opacity: 0.72;
+  mix-blend-mode: screen;
+  opacity: 0.85;
+  /* contrast() crushes the image's near-black ground to true 0 so `screen`
+     drops it cleanly; the radial mask kills the compressed edge box */
+  filter: contrast(2) brightness(1.05) drop-shadow(0 0 30px rgba(150, 172, 158, 0.16));
+  -webkit-mask-image: radial-gradient(circle at 50% 50%, #000 60%, transparent 84%);
+  mask-image: radial-gradient(circle at 50% 50%, #000 60%, transparent 84%);
+  animation: glyph-breathe 15s ease-in-out infinite;
+}
+@keyframes glyph-breathe {
+  0%,
+  100% {
+    scale: 1;
+    opacity: 0.74;
+  }
+  50% {
+    scale: 1.018;
+    opacity: 0.82;
+  }
 }
 
-/* ---------- eyebrow ---------- */
 .arrival__eyebrow {
   position: absolute;
   left: 7%;
-  top: 9%;
+  top: 10%;
   z-index: 4;
   margin: 0;
   font-family: var(--font-mono);
-  font-size: clamp(8px, 1.4cqw, 10px);
+  font-size: clamp(8px, 1.3cqw, 10px);
   letter-spacing: 0.3em;
   text-transform: uppercase;
-  color: color-mix(in srgb, var(--arr-ink) 82%, transparent);
+  color: color-mix(in srgb, var(--arr-ember) 55%, var(--arr-ink));
 }
 
-/* ---------- content ---------- */
 .arrival__content {
   position: absolute;
-  left: 6.5%;
-  top: 52%;
-  width: 41%;
+  left: 7%;
+  top: 50%;
+  width: 40%;
   transform: translateY(-50%);
   z-index: 4;
+  display: flex;
+  flex-direction: column;
+  gap: 1.15em;
 }
-.movement {
-  position: absolute;
-  top: 50%;
-  left: 0;
-  right: 0;
-  transform: translateY(-50%);
-  display: grid;
-  grid-template-columns: 44px 1fr;
-  gap: 22px;
-  align-items: start;
-  opacity: 0;
-  will-change: opacity, transform;
-}
-.movement__mark {
-  width: 44px;
-  height: 44px;
-  margin-top: 0.15em;
-  opacity: 0.7;
-}
-.movement p {
+.arrival__content p {
   margin: 0;
   font-family: var(--font-arr-body);
   font-optical-sizing: auto;
   font-weight: 400;
-  font-size: clamp(0.82rem, 2cqw, 1.04rem);
+  font-size: clamp(0.78rem, 1.85cqw, 1.02rem);
   line-height: 1.62;
-  letter-spacing: 0.004em;
+  letter-spacing: 0.003em;
   color: var(--arr-ink);
   text-wrap: pretty;
 }
@@ -182,14 +172,14 @@
 /* ---------- reduced motion: stacked, static ---------- */
 @media (prefers-reduced-motion: reduce) {
   .arrival {
-    background: var(--arr-fog);
     padding: 12vh max(7vw, 22px);
   }
   .arrival__shell,
   .hep--1,
   .hep--2,
   .arrival__fog--a,
-  .arrival__fog--b {
+  .arrival__fog--b,
+  .arrival__glyph {
     animation: none;
   }
   .arrival__content {
@@ -198,47 +188,52 @@
     top: auto;
     width: min(42rem, 100%);
     transform: none;
-    display: flex;
-    flex-direction: column;
-    gap: 3rem;
+    gap: 1.4em;
     margin-top: 3rem;
-  }
-  .movement {
-    position: relative;
-    transform: none;
-    opacity: 1;
   }
   .arrival__glyph {
     left: 50%;
-    opacity: 0.22;
+    right: auto;
+    width: 80%;
+    transform: translate(-50%, -50%);
+    opacity: 0.16;
   }
 }
 
 /* ---------- portrait / small frame ---------- */
 @media (max-width: 700px), (orientation: portrait) {
   .arrival__glyph {
+    right: auto;
     left: 50%;
-    top: 27%;
-    width: 96%;
-    opacity: 0.15;
+    top: 8%;
+    width: 34%;
+    transform: translate(-50%, 0);
+    opacity: 0.5;
+    -webkit-mask-image: radial-gradient(circle at 50% 50%, #000 58%, transparent 82%);
+    mask-image: radial-gradient(circle at 50% 50%, #000 58%, transparent 82%);
+  }
+  .arrival__eyebrow {
+    top: 4%;
   }
   .arrival__content {
-    left: 7%;
-    width: 86%;
+    left: 8%;
+    right: 8%;
+    top: 27%;
+    bottom: 6%;
+    width: auto;
+    transform: none;
+    justify-content: center;
+    gap: 0.85em;
+  }
+  .arrival__content p {
+    font-size: clamp(0.8rem, 3.9cqw, 0.94rem);
+    line-height: 1.5;
   }
   .arrival__shell {
-    right: -40%;
-    width: 70%;
+    right: -60%;
+    width: 84%;
   }
-  .movement {
-    grid-template-columns: 32px 1fr;
-    gap: 14px;
-  }
-  .movement__mark {
-    width: 32px;
-    height: 32px;
-  }
-  .movement p {
-    font-size: clamp(0.82rem, 4.4cqw, 1rem);
+  .hep--2 {
+    display: none;
   }
 }

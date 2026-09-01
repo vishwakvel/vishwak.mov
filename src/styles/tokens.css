@@ -8,14 +8,14 @@
   --edge-amber: #e4a140;
   --steel: #7a828e;
 
-  /* reel 02 — Arrival: the barrier scene, luminous fog + dark silhouettes */
-  --arr-fog-hi: #c6cdc8;
-  --arr-fog: #939e99;
-  --arr-slate: #45514e;
-  --arr-deep: #232b2b;
-  --arr-void: #141a1a;
-  --arr-ink: #101614;
-  --arr-ember: #c98f5c;
+  /* reel 02 — Arrival: gloomy grey-green, the language lit against the dark */
+  --arr-fog-hi: #7f8c83;
+  --arr-fog: #55625b;
+  --arr-slate: #384540;
+  --arr-deep: #18211d;
+  --arr-void: #0b1210;
+  --arr-ink: #c8d0c8;
+  --arr-ember: #c78d5a;
 
   /* true IMAX 15/70 frame: 1.43:1. Height-first so the letterbox bars always
      have room for the sprocket rows and edge stamp. */

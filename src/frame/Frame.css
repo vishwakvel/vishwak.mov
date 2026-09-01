@@ -290,7 +290,7 @@
 @media (max-width: 700px), (orientation: portrait) {
   :root {
     --frame-w: 92vw;
-    --frame-h: min(82svh, calc(92vw / 0.62));
+    --frame-h: min(88svh, calc(92vw / 0.52));
   }
   .gate {
     --iy-wide: var(--iy-full);

@@ -12,8 +12,7 @@ gsap.registerPlugin(ScrollTrigger)
 // scroll budget per phase, in viewport heights
 const BOOT = 1 // reel 01 held
 const CROSS = 1 // reel 01 -> 02 advance
-const ARRIVAL = 4 // reel 02 movements
-const TOTAL = BOOT + CROSS + ARRIVAL + 1
+const TOTAL = BOOT + CROSS + 0.6
 
 export default function App() {
   useSmoothScroll()
