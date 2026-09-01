@@ -1,6 +1,6 @@
-/* Reel 02 — Arrival. Figures in the mist behind, the about-me delivered as
-   three logogram cards. Attend to one and it translates.
-   (.arrival is sized to .gate-screen by Frame.css.) */
+/* Reel 02 — Arrival. Figures in the mist behind, three glyphs above, and a
+   pale analysis panel that resolves one at a time — a gloss, the candidate
+   meanings, then the translation. (.arrival is sized to .gate-screen.) */
 
 .arrival {
   color: var(--arr-ink);
@@ -12,29 +12,29 @@
   position: absolute;
   inset: -6%;
   background-size: cover;
-  background-position: 50% 38%;
+  background-position: 50% 36%;
   filter: blur(1.5px) saturate(0.58) brightness(1) contrast(1.02);
 }
 
-/* the shell, faded to almost nothing at the frame's right edge */
+/* the shell — present now, a dark mass at the frame's right edge */
 .arrival__shell {
   position: absolute;
-  right: -34%;
-  top: -24%;
-  width: 44%;
-  height: 150%;
+  right: -14%;
+  top: -14%;
+  width: 38%;
+  height: 130%;
   border-radius: 50%;
-  background: radial-gradient(closest-side, #060a09 0%, rgba(6, 10, 9, 0.5) 55%, transparent 100%);
-  filter: blur(24px);
-  opacity: 0.55;
+  background: radial-gradient(closest-side, #040c0a 0%, #081310 46%, rgba(9, 19, 16, 0.35) 82%, transparent 100%);
+  filter: blur(7px);
+  opacity: 1;
 }
 
 .arrival__grade {
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(180deg, rgba(16, 24, 20, 0.22) 0%, rgba(10, 16, 13, 0.44) 100%),
-    radial-gradient(58% 46% at 42% 38%, rgba(60, 82, 70, 0.18), transparent 72%),
+    linear-gradient(180deg, rgba(16, 24, 20, 0.2) 0%, rgba(10, 16, 13, 0.42) 100%),
+    radial-gradient(56% 44% at 40% 36%, rgba(60, 82, 70, 0.16), transparent 72%),
     radial-gradient(128% 108% at 50% 48%, transparent 46%, rgba(0, 0, 0, 0.56) 100%);
 }
 .arrival__grade::after {
@@ -49,8 +49,8 @@
 .arrival__eyebrow {
   position: absolute;
   left: 7%;
-  top: 8%;
-  z-index: 4;
+  top: 7.5%;
+  z-index: 5;
   display: flex;
   align-items: baseline;
   gap: 1.4em;
@@ -58,144 +58,192 @@
   font-size: clamp(8px, 1.2cqw, 10px);
   letter-spacing: 0.26em;
   text-transform: uppercase;
-  color: color-mix(in srgb, var(--arr-ember) 58%, var(--arr-ink));
+  color: color-mix(in srgb, var(--arr-ember) 62%, #0e1512);
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.55);
 }
 .arrival__hint {
   letter-spacing: 0.18em;
-  color: color-mix(in srgb, var(--arr-ink) 48%, transparent);
+  color: rgba(20, 26, 22, 0.62);
 }
 
-/* ---------- the cards ---------- */
-.cards {
+/* ---------- the three glyphs ---------- */
+.glyphs {
   position: absolute;
-  left: 6%;
-  right: 6%;
-  top: 53%;
-  transform: translateY(-50%);
-  z-index: 3;
+  left: 0;
+  right: 0;
+  top: 15%;
+  z-index: 4;
   display: flex;
   justify-content: center;
-  align-items: stretch;
-  gap: 2.4%;
-  margin: 0;
+  gap: clamp(22px, 7cqw, 90px);
+}
+.glyph {
+  appearance: none;
+  background: none;
+  border: 0;
   padding: 0;
-  list-style: none;
-}
-
-.card {
+  margin: 0;
+  cursor: pointer;
   position: relative;
-  flex: 1 1 0;
-  max-width: 30%;
-  padding: clamp(14px, 1.9cqw, 26px);
-  overflow: hidden;
-  background: rgba(10, 16, 14, 0.56);
-  border: 1px solid rgba(200, 212, 202, 0.15);
-  backdrop-filter: blur(3px);
-  -webkit-backdrop-filter: blur(3px);
-  transition:
-    transform 0.55s cubic-bezier(0.2, 0.7, 0.2, 1),
-    opacity 0.5s ease,
-    filter 0.5s ease,
-    border-color 0.5s ease,
-    background 0.5s ease;
+  width: clamp(84px, 14cqw, 156px);
+  aspect-ratio: 1;
 }
-.card:nth-child(1) {
-  transform: translateY(-16px) rotate(-1.4deg);
-}
-.card:nth-child(2) {
-  transform: translateY(13px) rotate(0.3deg);
-}
-.card:nth-child(3) {
-  transform: translateY(-5px) rotate(1.5deg);
-}
-
-.card__glyph {
+/* selection frame — the machine has this glyph in its sights */
+.glyph::before {
+  content: "";
   position: absolute;
-  right: -26%;
-  top: 50%;
-  width: 82%;
-  transform: translateY(-50%) rotate(var(--rot, 0deg)) scaleX(var(--flip, 1));
-  mix-blend-mode: screen;
-  opacity: 0.17;
-  filter: contrast(2.1) brightness(0.8);
-  pointer-events: none;
-  transition: opacity 0.6s ease;
+  inset: -16%;
+  border: 1px solid color-mix(in srgb, var(--arr-ember) 32%, transparent);
+  opacity: 0;
+  transition: opacity 0.4s ease;
 }
-.card__num {
-  position: relative;
-  z-index: 1;
+.glyph.is-active::before {
+  opacity: 1;
+}
+/* the ink itself — the image masks a grey fill, so only the language shows */
+.glyph__ink {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(155deg, #b9c1b8 0%, #8b968b 55%, #6b756d 100%);
+  -webkit-mask: var(--glyph) center / contain no-repeat;
+  mask: var(--glyph) center / contain no-repeat;
+  -webkit-mask-mode: luminance;
+  mask-mode: luminance;
+  transform: rotate(var(--rot, 0deg)) scaleX(var(--flip, 1));
+  opacity: 0.6;
+  transition: opacity 0.5s ease, background 0.5s ease;
+}
+.glyph.is-active .glyph__ink {
+  opacity: 1;
+  background: linear-gradient(155deg, #d9e0d8 0%, #a8b2a8 55%, #869089 100%);
+}
+.glyph__tag {
+  position: absolute;
+  left: 50%;
+  bottom: -1.6em;
+  transform: translateX(-50%);
   font-family: var(--font-mono);
-  font-size: 11px;
-  letter-spacing: 0.22em;
-  text-transform: lowercase;
-  color: color-mix(in srgb, var(--arr-ember) 68%, transparent);
+  font-size: 10px;
+  letter-spacing: 0.24em;
+  color: color-mix(in srgb, var(--arr-ink) 40%, transparent);
+  transition: color 0.5s ease;
 }
-.card__text {
-  position: relative;
-  z-index: 1;
-  margin: 0.85em 0 0;
+.glyph.is-active .glyph__tag {
+  color: color-mix(in srgb, var(--arr-ember) 80%, transparent);
+}
+.glyph:focus-visible {
+  outline: 1px solid color-mix(in srgb, var(--arr-ember) 55%, transparent);
+  outline-offset: 8px;
+}
+
+/* ---------- the analysis panel — pale, like the machine's readout ---------- */
+.analysis {
+  position: absolute;
+  left: 7%;
+  right: 7%;
+  bottom: 8%;
+  z-index: 4;
+  min-height: 42%;
+}
+.panel {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  max-width: 40rem;
+  padding: clamp(16px, 2.3cqw, 30px);
+  background: rgba(228, 232, 225, 0.92);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.4);
+  color: #1a221e;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(16px);
+  transition: opacity 0.45s ease, transform 0.45s ease, visibility 0.45s;
+}
+.panel.is-shown {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+}
+.panel__head {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(26, 34, 30, 0.5);
+}
+.panel__gloss {
+  margin: 0.45em 0 0;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(1.6rem, 4.6cqw, 2.7rem);
+  letter-spacing: 0.04em;
+  color: #121814;
+}
+.panel__related {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4em 1em;
+  margin: 0.9em 0 0;
+  padding: 0.75em 0 0;
+  border-top: 1px solid rgba(26, 34, 30, 0.16);
+  list-style: none;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.08em;
+  color: rgba(26, 34, 30, 0.52);
+}
+.panel__related li::before {
+  content: "≈ ";
+  opacity: 0.45;
+}
+.panel__text {
+  margin: 1em 0 0;
   font-family: var(--font-arr-body);
   font-optical-sizing: auto;
-  font-weight: 400;
-  font-size: clamp(0.72rem, 1.52cqw, 0.92rem);
-  line-height: 1.58;
-  color: color-mix(in srgb, var(--arr-ink) 90%, transparent);
-  transition: color 0.5s ease;
+  font-size: clamp(0.8rem, 1.7cqw, 1rem);
+  line-height: 1.6;
+  color: #232b26;
   text-wrap: pretty;
 }
 
-/* attend to one card — it translates, the others fall back into the mist */
-.cards:hover .card:not(:hover):not(:focus-within),
-.cards:focus-within .card:not(:hover):not(:focus-within) {
-  opacity: 0.38;
-  filter: blur(1.6px) brightness(0.8);
-}
-.card:hover,
-.card:focus-within {
-  transform: translateY(-24px) scale(1.05);
-  z-index: 5;
-  border-color: rgba(200, 214, 202, 0.24);
-  background: rgba(11, 18, 15, 0.66);
-}
-.card:hover .card__glyph,
-.card:focus-within .card__glyph {
-  opacity: 0.46;
-}
-.card:hover .card__text,
-.card:focus-within .card__text {
-  color: var(--arr-ink);
-}
-.card:focus-visible {
-  outline: 1px solid color-mix(in srgb, var(--arr-ember) 55%, transparent);
-  outline-offset: 4px;
-}
-
-/* ---------- reduced motion ---------- */
+/* ---------- reduced motion: glyphs + all panels stacked ---------- */
 @media (prefers-reduced-motion: reduce) {
   .arrival {
-    padding: 12vh max(7vw, 22px);
+    padding: 10vh max(7vw, 22px);
+    overflow-y: auto;
   }
-  .cards {
+  .glyphs {
+    position: relative;
+    top: auto;
+    gap: 2rem;
+    margin: 3rem 0 2rem;
+  }
+  .glyph__ink {
+    opacity: 0.7;
+  }
+  .analysis {
     position: relative;
     left: auto;
     right: auto;
-    top: auto;
-    transform: none;
+    bottom: auto;
+    min-height: 0;
+    display: flex;
     flex-direction: column;
-    max-width: 44rem;
-    margin-top: 3rem;
     gap: 1.5rem;
   }
-  .card,
-  .card:nth-child(1),
-  .card:nth-child(2),
-  .card:nth-child(3) {
-    max-width: none;
+  .panel {
+    position: relative;
+    max-width: 44rem;
+    opacity: 1;
+    visibility: visible;
     transform: none;
     transition: none;
-  }
-  .card__text {
-    color: var(--arr-ink);
   }
 }
 
@@ -206,47 +254,38 @@
     overflow-x: hidden;
   }
   .arrival__eyebrow {
-    top: 4%;
+    top: 3.5%;
     flex-direction: column;
     gap: 0.3em;
   }
-  .cards {
+  .glyphs {
+    position: absolute;
+    top: 12%;
+    gap: 8vw;
+  }
+  .glyph {
+    width: 20vw;
+  }
+  .glyph__ink {
+    opacity: 0.5;
+  }
+  .analysis {
     position: absolute;
     left: 6%;
     right: 6%;
-    top: 13%;
-    bottom: 4%;
-    transform: none;
-    flex-direction: column;
-    justify-content: center;
-    gap: 12px;
+    bottom: 5%;
+    top: 34%;
+    min-height: 0;
   }
-  .card,
-  .card:nth-child(1),
-  .card:nth-child(2),
-  .card:nth-child(3) {
+  .panel {
     max-width: none;
-    transform: none;
-    padding: 14px 16px;
+    padding: 16px 18px;
   }
-  .card__glyph {
-    right: -30%;
-    width: 66%;
-    opacity: 0.1;
+  .panel:not(.is-shown) {
+    display: none;
   }
-  .card__text {
-    font-size: clamp(0.74rem, 3.7cqw, 0.86rem);
-    line-height: 1.5;
-    color: color-mix(in srgb, var(--arr-ink) 88%, transparent);
-  }
-  /* no hover on touch — keep them all legible, tap just lifts one */
-  .cards:hover .card:not(:hover):not(:focus-within),
-  .cards:focus-within .card:not(:hover):not(:focus-within) {
-    opacity: 0.7;
-    filter: none;
-  }
-  .card:hover,
-  .card:focus-within {
-    transform: scale(1.02);
+  .panel__text {
+    font-size: clamp(0.78rem, 3.7cqw, 0.9rem);
+    line-height: 1.52;
   }
 }
