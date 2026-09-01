@@ -3,8 +3,10 @@
   inset: 0;
   overflow: hidden;
   isolation: isolate;
-  /* the surround: a darkened booth, not flat #000 */
-  background: radial-gradient(125% 95% at 50% 40%, #111118 0%, #0b0b0f 46%, #070709 100%);
+  /* the surround: a darkened projection booth, not flat #000 */
+  background:
+    radial-gradient(46% 40% at 50% 44%, rgba(233, 224, 205, 0.045), transparent 70%),
+    radial-gradient(130% 100% at 50% 36%, #12131a 0%, #0c0c11 44%, #060608 100%);
 }
 /* faint fixed grain over the whole surround */
 .reel::before {
@@ -13,7 +15,7 @@
   inset: 0;
   z-index: 1;
   pointer-events: none;
-  opacity: 0.04;
+  opacity: 0.045;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 .reel::after {
@@ -22,7 +24,36 @@
   inset: 0;
   z-index: 30;
   pointer-events: none;
-  background: radial-gradient(135% 105% at 50% 48%, transparent 55%, rgba(0, 0, 0, 0.62) 100%);
+  background: radial-gradient(132% 104% at 50% 46%, transparent 50%, rgba(0, 0, 0, 0.68) 100%);
+}
+
+/* projection light spilling toward the frame from behind the viewer */
+.beam {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background:
+    radial-gradient(120% 74% at 50% -16%, rgba(150, 162, 188, 0.09) 0%, transparent 52%),
+    conic-gradient(
+      from 180deg at 50% -8%,
+      transparent 0deg,
+      rgba(162, 172, 198, 0.07) 13deg,
+      transparent 26deg
+    );
+}
+
+/* dust in the beam — drifts over the whole scene, densest up in the light */
+.dust {
+  position: absolute;
+  inset: 0;
+  z-index: 35;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  mix-blend-mode: screen;
+  -webkit-mask-image: radial-gradient(78% 52% at 50% 16%, #000 0%, rgba(0, 0, 0, 0.3) 55%, transparent 82%);
+  mask-image: radial-gradient(78% 52% at 50% 16%, #000 0%, rgba(0, 0, 0, 0.3) 55%, transparent 82%);
 }
 
 /* ---------- xenon strike ---------- */
@@ -67,7 +98,11 @@
     #14151b 94%,
     #0c0d11 100%
   );
-  box-shadow: 0 0 60px 8px rgba(0, 0, 0, 0.55);
+  /* screen light bleeding onto the booth around the strip */
+  box-shadow:
+    0 0 0 1px rgba(0, 0, 0, 0.5),
+    0 0 130px 30px rgba(122, 140, 178, 0.05),
+    0 0 60px 8px rgba(0, 0, 0, 0.55);
 }
 
 /* slivers of the neighbouring frames */
@@ -238,16 +273,15 @@
   margin: 0;
   display: flex;
   flex-direction: column;
-  gap: 0.06em;
+  gap: 0.34em;
   font-family: var(--font-display);
-  font-optical-sizing: auto;
-  font-weight: 700;
-  font-size: clamp(2.15rem, 6.6vw, 4.5rem);
-  line-height: 1.03;
-  letter-spacing: 0.02em;
+  font-weight: 400;
+  font-size: clamp(1.35rem, 4vw, 2.9rem);
+  line-height: 1.1;
+  letter-spacing: 0.03em;
   text-transform: uppercase;
   color: var(--xenon);
-  text-shadow: 0 0 36px rgba(241, 228, 207, 0.14);
+  text-shadow: 0 0 40px rgba(241, 228, 207, 0.16);
 }
 .titlecard__rule {
   width: 38px;

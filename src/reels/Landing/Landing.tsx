@@ -1,5 +1,6 @@
 import { useRef } from 'react'
 import FilmGrain from './FilmGrain'
+import Dust from './Dust'
 import { useBootSequence } from './useBootSequence'
 import './Landing.css'
 
@@ -17,6 +18,8 @@ export default function Landing() {
   return (
     <main className="reel" ref={root}>
       <div className="flash" aria-hidden="true" />
+      <div className="beam" aria-hidden="true" />
+      <Dust className="dust" />
 
       {/* filmstrip furniture, in the surround so the mask never clips it */}
       <div className="strip" aria-hidden="true">

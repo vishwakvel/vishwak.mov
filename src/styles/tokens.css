@@ -13,7 +13,7 @@
   --frame-h: min(78svh, calc(94vw / 1.43));
   --frame-w: calc(var(--frame-h) * 1.43);
 
-  --font-display: "Bodoni Moda", "Didot", "Bodoni MT", "Times New Roman", serif;
+  --font-display: "Michroma", "Eurostile", "Bank Gothic", ui-sans-serif, sans-serif;
   --font-mono: "Space Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
 
   color-scheme: dark;
