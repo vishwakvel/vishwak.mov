@@ -19,7 +19,7 @@ export function useBootSequence(root: RefObject<HTMLElement | null>) {
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
     const gate = q('.gate')[0] as HTMLElement | undefined
-    const inner = q('.gate-inner')[0] as HTMLElement | undefined
+    const inner = q('.gate-screen')[0] as HTMLElement | undefined
     const counter = q('[data-counter]')[0] as HTMLElement | undefined
     const edgenum = q('[data-edgenum]')[0] as HTMLElement | undefined
     const head = q('[data-head]')[0] as HTMLElement | undefined

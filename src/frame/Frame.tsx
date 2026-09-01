@@ -1,27 +1,26 @@
-import { useRef } from 'react'
+import { useRef, type ReactNode } from 'react'
 import FilmGrain from './FilmGrain'
 import Dust from './Dust'
 import { useBootSequence } from './useBootSequence'
-import './Landing.css'
-
-const GITHUB = 'https://github.com/vishwakvel'
-const LINKEDIN = 'https://linkedin.com/in/vishwakv'
+import './Frame.css'
 
 // IMAX is 15/70 — 15 perforations per frame edge.
-const PERFS_PER_FRAME = 15
-const SPROCKET_RUN = PERFS_PER_FRAME * 2
+const SPROCKET_RUN = 15 * 2
 
-export default function Landing() {
+/**
+ * The persistent 70mm frame. The booth, filmstrip and gate never change —
+ * only the picture inside .gate-screen, swapped reel to reel by scroll.
+ */
+export default function Frame({ children }: { children: ReactNode }) {
   const root = useRef<HTMLDivElement>(null)
   useBootSequence(root)
 
   return (
-    <main className="reel" ref={root}>
+    <div className="reel" ref={root}>
       <div className="flash" aria-hidden="true" />
       <div className="beam" aria-hidden="true" />
       <Dust className="dust" />
 
-      {/* filmstrip furniture, in the surround so the mask never clips it */}
       <div className="strip" aria-hidden="true">
         <div className="strip__base" />
         <div className="strip__adjacent strip__adjacent--prev" />
@@ -53,28 +52,12 @@ export default function Landing() {
         <div className="lamp" aria-hidden="true" />
         <FilmGrain className="grain" />
         <div className="flicker" aria-hidden="true" />
+        <div className="gate-flash" aria-hidden="true" />
 
-        <div className="gate-inner">
+        <div className="gate-screen" data-screen>
           <div className="framemark framemark--tr" aria-hidden="true" />
           <div className="framemark framemark--br" aria-hidden="true" />
-
-          <div className="titlecard" data-titlecard>
-            <h1>
-              <span>Vishwak</span>
-              <span>Velamuri</span>
-            </h1>
-            <div className="titlecard__rule" />
-          </div>
-
-          <nav className="leader" aria-label="Elsewhere">
-            <a href={GITHUB} target="_blank" rel="noreferrer">
-              GITHUB<i aria-hidden="true">↗</i>
-            </a>
-            <span className="leader__sep" aria-hidden="true">/</span>
-            <a href={LINKEDIN} target="_blank" rel="noreferrer">
-              LINKEDIN<i aria-hidden="true">↗</i>
-            </a>
-          </nav>
+          {children}
         </div>
       </div>
 
@@ -90,10 +73,6 @@ export default function Landing() {
           0000
         </span>
       </div>
-
-      <noscript>
-        <p className="noscript">Vishwak Velamuri</p>
-      </noscript>
-    </main>
+    </div>
   )
 }

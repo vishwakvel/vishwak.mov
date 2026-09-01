@@ -9,42 +9,18 @@
   overflow: hidden;
 }
 
-/* the two reels are fixed layers; scroll drives what's shown */
-.viewport-stage .reel {
-  position: absolute;
+.noscript-note {
+  position: fixed;
   inset: 0;
-  z-index: 1;
-}
-.viewport-stage .arrival {
-  position: absolute;
-  inset: 0;
-  z-index: 3;
-  visibility: hidden;
+  display: grid;
+  place-content: center;
+  padding: 8vw;
+  text-align: center;
+  font-family: var(--font-mono);
+  color: var(--xenon);
 }
 
-/* the veil between reels: Arrival's colour grade + a bloom of fog */
-.worldshift {
-  position: absolute;
-  inset: 0;
-  z-index: 2;
-  pointer-events: none;
-}
-.worldshift__tint {
-  position: absolute;
-  inset: 0;
-  opacity: 0;
-  background: linear-gradient(180deg, #2b3634 0%, #202827 46%, #171d1d 100%);
-}
-.worldshift__fog {
-  position: absolute;
-  inset: -12%;
-  opacity: 0;
-  background:
-    radial-gradient(58% 46% at 50% 42%, rgba(226, 231, 226, 0.92) 0%, rgba(198, 205, 200, 0.4) 42%, transparent 74%),
-    radial-gradient(120% 92% at 50% 62%, rgba(150, 162, 158, 0.42), transparent 72%);
-  filter: blur(6px);
-}
-
+/* reduced motion: no scroll-jack, reels stack in normal flow */
 @media (prefers-reduced-motion: reduce) {
   .scroll-track {
     display: none;
@@ -54,16 +30,21 @@
     overflow: visible;
   }
   .viewport-stage .reel {
-    position: relative;
-    height: 100svh;
-  }
-  .viewport-stage .arrival {
-    position: relative;
-    visibility: visible;
     height: auto;
-    min-height: 100svh;
   }
-  .worldshift {
-    display: none;
+  .viewport-stage .gate {
+    position: static;
+    clip-path: none;
+  }
+  .viewport-stage .gate-screen {
+    position: static;
+    width: auto;
+    height: auto;
+    transform: none;
+  }
+  .viewport-stage .gate-screen > [data-reel-content] {
+    position: static;
+    overflow: visible;
+    min-height: 100svh;
   }
 }

@@ -3,16 +3,17 @@ import Logogram, { type LogogramHandle } from './Logogram'
 import { useArrivalScroll } from './useArrivalScroll'
 import './Arrival.css'
 
+/** Reel 02 — Arrival. Projected into the frame: the barrier, fog and heptapod
+ *  logogram, with the about-me arriving in three movements. */
 export default function Arrival() {
-  const root = useRef<HTMLElement>(null)
+  const root = useRef<HTMLDivElement>(null)
   const hero = useRef<LogogramHandle>(null)
   useArrivalScroll(root, hero)
 
   return (
-    <section className="arrival" ref={root}>
+    <div className="arrival" data-reel-content="arrival" ref={root}>
       <div className="arrival__sky" aria-hidden="true" />
       <div className="arrival__shell" aria-hidden="true" />
-      <div className="arrival__haze" aria-hidden="true" />
       <div className="arrival__silhouettes" aria-hidden="true">
         <span className="hep hep--1" />
         <span className="hep hep--2" />
@@ -22,15 +23,9 @@ export default function Arrival() {
 
       <Logogram ref={hero} className="arrival__glyph" seed={41} blooms={14} interactive />
 
-      <div className="arrival__hud">
-        <span>REEL 02</span>
-        <span className="arrival__hud-title">ARRIVAL</span>
-        <span>0002</span>
-      </div>
+      <p className="arrival__eyebrow">Transmission 001 — About</p>
 
       <div className="arrival__content">
-        <p className="arrival__eyebrow">Transmission 001 — About</p>
-
         <article className="movement" data-mv="1">
           <Logogram className="movement__mark" seed={11} blooms={3} autoDraw />
           <p>
@@ -64,6 +59,6 @@ export default function Arrival() {
           </p>
         </article>
       </div>
-    </section>
+    </div>
   )
 }

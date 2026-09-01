@@ -1,3 +1,8 @@
+/* ============================================================
+   The persistent IMAX 15/70 frame. Booth, filmstrip, gate.
+   Reel content is projected into .gate-screen and swapped by scroll.
+   ============================================================ */
+
 .reel {
   position: relative;
   width: 100%;
@@ -5,12 +10,10 @@
   overflow: hidden;
   isolation: isolate;
   transform-origin: 50% 42%;
-  /* the surround: a darkened projection booth, not flat #000 */
   background:
     radial-gradient(46% 40% at 50% 44%, rgba(233, 224, 205, 0.045), transparent 70%),
     radial-gradient(130% 100% at 50% 36%, #12131a 0%, #0c0c11 44%, #060608 100%);
 }
-/* faint fixed grain over the whole surround */
 .reel::before {
   content: "";
   position: absolute;
@@ -29,7 +32,6 @@
   background: radial-gradient(132% 104% at 50% 46%, transparent 50%, rgba(0, 0, 0, 0.68) 100%);
 }
 
-/* projection light spilling toward the frame from behind the viewer */
 .beam {
   position: absolute;
   inset: 0;
@@ -37,15 +39,9 @@
   pointer-events: none;
   background:
     radial-gradient(120% 74% at 50% -16%, rgba(150, 162, 188, 0.09) 0%, transparent 52%),
-    conic-gradient(
-      from 180deg at 50% -8%,
-      transparent 0deg,
-      rgba(162, 172, 198, 0.07) 13deg,
-      transparent 26deg
-    );
+    conic-gradient(from 180deg at 50% -8%, transparent 0deg, rgba(162, 172, 198, 0.07) 13deg, transparent 26deg);
 }
 
-/* dust in the beam — drifts over the whole scene, densest up in the light */
 .dust {
   position: absolute;
   inset: 0;
@@ -58,26 +54,18 @@
   mask-image: radial-gradient(78% 52% at 50% 16%, #000 0%, rgba(0, 0, 0, 0.3) 55%, transparent 82%);
 }
 
-/* ---------- xenon strike ---------- */
+/* ---------- xenon strike (boot only) ---------- */
 .flash {
   position: absolute;
   inset: 0;
   z-index: 40;
   opacity: 0;
   pointer-events: none;
-  background: radial-gradient(
-    circle at 50% 46%,
-    #ffffff 0%,
-    var(--xenon-warm) 42%,
-    rgba(241, 228, 207, 0) 78%
-  );
+  background: radial-gradient(circle at 50% 46%, #ffffff 0%, var(--xenon-warm) 42%, rgba(241, 228, 207, 0) 78%);
   will-change: opacity;
 }
 
-/* ---------- filmstrip furniture (surround) ----------
-   A vertical strip of 70mm running down the screen: a lighter film base band,
-   sprocket rows top and bottom, this frame punched in the middle, slivers of
-   the neighbouring frames either side. */
+/* ---------- filmstrip furniture ---------- */
 .strip {
   --sliver: clamp(18px, 2.8vw, 38px);
   position: absolute;
@@ -86,28 +74,18 @@
   pointer-events: none;
   opacity: 0;
 }
-
 .strip__base {
   position: absolute;
   top: 0;
   bottom: 0;
   left: calc(50% - var(--frame-w) / 2 - var(--sliver));
   width: calc(var(--frame-w) + 2 * var(--sliver));
-  background: linear-gradient(
-    90deg,
-    #0c0d11 0%,
-    #14151b 6%,
-    #14151b 94%,
-    #0c0d11 100%
-  );
-  /* screen light bleeding onto the booth around the strip */
+  background: linear-gradient(90deg, #0c0d11 0%, #14151b 6%, #14151b 94%, #0c0d11 100%);
   box-shadow:
     0 0 0 1px rgba(0, 0, 0, 0.5),
     0 0 130px 30px rgba(122, 140, 178, 0.05),
     0 0 60px 8px rgba(0, 0, 0, 0.55);
 }
-
-/* slivers of the neighbouring frames */
 .strip__adjacent {
   position: absolute;
   top: calc(50% - var(--frame-h) / 2);
@@ -123,8 +101,6 @@
   left: calc(50% + var(--frame-w) / 2);
   box-shadow: inset 16px 0 24px rgba(0, 0, 0, 0.55);
 }
-
-/* frame lines where this frame meets its neighbours */
 .strip__frameline {
   position: absolute;
   top: 0;
@@ -138,8 +114,6 @@
 .strip__frameline--r {
   left: calc(50% + var(--frame-w) / 2);
 }
-
-/* sprocket rows in the letterbox bars */
 .sprockets {
   position: absolute;
   left: calc(50% - var(--frame-w) / 2);
@@ -173,7 +147,6 @@
     inset 0 0 0 1px rgba(0, 0, 0, 0.6),
     0 0 4px rgba(242, 243, 247, 0.18);
 }
-
 .strip__stamp {
   position: absolute;
   left: calc(50% - var(--frame-w) / 2 + clamp(26px, 3.6vw, 58px));
@@ -186,16 +159,14 @@
   white-space: nowrap;
 }
 
-/* ---------- the gate: full viewport, masked down to 1.43:1 ---------- */
+/* ---------- the gate: full viewport, masked to 1.43:1 ---------- */
 .gate {
   position: absolute;
   inset: 0;
   z-index: 10;
   background: var(--reel-black);
-  /* clip-path is driven imperatively by useBootSequence (pixel insets) */
   clip-path: inset(0 0);
 }
-
 .lamp {
   position: absolute;
   inset: -12%;
@@ -206,7 +177,6 @@
     radial-gradient(120% 96% at 50% 46%, #2d3039 0%, #17181e 52%, #0a0a0b 100%);
   will-change: opacity;
 }
-
 .grain {
   position: absolute;
   inset: 0;
@@ -216,7 +186,6 @@
   mix-blend-mode: overlay;
   pointer-events: none;
 }
-
 .flicker {
   position: absolute;
   inset: 0;
@@ -225,113 +194,57 @@
   mix-blend-mode: soft-light;
   pointer-events: none;
 }
+/* the dark "between frames" pulse when a reel advances */
+.gate-flash {
+  position: absolute;
+  inset: 0;
+  z-index: 25;
+  opacity: 0;
+  background: #06080a;
+  pointer-events: none;
+}
 
-/* ---------- content, sized to the frame, drifting with gate weave ---------- */
-.gate-inner {
+/* ---------- the projected picture: swappable reel content ---------- */
+.gate-screen {
   position: absolute;
   left: 50%;
   top: 50%;
   width: var(--frame-w);
   height: var(--frame-h);
   transform: translate(-50%, -50%) translate3d(var(--wx, 0px), var(--wy, 0px), 0);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
   color: var(--xenon);
   box-shadow:
     inset 0 0 0 1px rgba(237, 239, 242, 0.12),
     inset 0 0 80px 4px rgba(0, 0, 0, 0.42);
 }
+.gate-screen > [data-reel-content] {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
 
-/* registration / framing marks */
 .framemark {
   position: absolute;
-  width: 20px;
-  height: 20px;
+  z-index: 20;
+  width: 18px;
+  height: 18px;
   opacity: 0;
   border: 1px solid color-mix(in srgb, var(--edge-amber) 50%, transparent);
 }
 .framemark--tr {
-  top: 2.4vmin;
-  right: 2.4vmin;
+  top: 14px;
+  right: 14px;
   border-left: 0;
   border-bottom: 0;
 }
 .framemark--br {
-  bottom: 2.4vmin;
-  right: 2.4vmin;
+  bottom: 14px;
+  right: 14px;
   border-left: 0;
   border-top: 0;
 }
 
-/* ---------- title card ---------- */
-.titlecard {
-  opacity: 0;
-  text-align: center;
-  padding: 0 10%;
-}
-.titlecard h1 {
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 0.34em;
-  font-family: var(--font-display);
-  font-weight: 400;
-  font-size: clamp(1.35rem, 4vw, 2.9rem);
-  line-height: 1.1;
-  letter-spacing: 0.03em;
-  text-transform: uppercase;
-  color: var(--xenon);
-  text-shadow: 0 0 40px rgba(241, 228, 207, 0.16);
-}
-.titlecard__rule {
-  width: 38px;
-  height: 1px;
-  margin: clamp(18px, 3.2vh, 32px) auto 0;
-  background: color-mix(in srgb, var(--edge-amber) 75%, transparent);
-}
-
-/* ---------- leader-print links ---------- */
-.leader {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: clamp(20px, 4.4vh, 42px);
-  display: flex;
-  gap: 14px;
-  align-items: center;
-  justify-content: center;
-  opacity: 0;
-}
-.leader a {
-  font-family: var(--font-mono);
-  font-size: 11px;
-  letter-spacing: 0.26em;
-  text-transform: uppercase;
-  text-decoration: none;
-  color: color-mix(in srgb, var(--xenon) 58%, transparent);
-  padding: 6px 4px;
-  transition: color 0.25s ease;
-}
-.leader a i {
-  margin-left: 5px;
-  opacity: 0.55;
-}
-.leader a:hover,
-.leader a:focus-visible {
-  color: var(--edge-amber);
-}
-.leader a:focus-visible {
-  outline: 1px solid color-mix(in srgb, var(--edge-amber) 60%, transparent);
-  outline-offset: 3px;
-}
-.leader__sep {
-  color: var(--steel);
-  font-size: 11px;
-}
-
-/* ---------- aspect label, printed just outside the frame ---------- */
+/* ---------- aspect label + HUD ---------- */
 .aspect-label {
   position: absolute;
   z-index: 12;
@@ -347,8 +260,6 @@
 .aspect-label span {
   color: color-mix(in srgb, var(--xenon) 70%, transparent);
 }
-
-/* ---------- projector HUD ---------- */
 .hud {
   position: absolute;
   inset: auto 0 0 0;
@@ -369,17 +280,6 @@
   color: color-mix(in srgb, var(--xenon) 55%, transparent);
 }
 
-.noscript {
-  position: absolute;
-  inset: 0;
-  display: grid;
-  place-content: center;
-  font-family: var(--font-display);
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: var(--xenon);
-}
-
 @media (prefers-reduced-motion: reduce) {
   .flash,
   .flicker {
@@ -387,7 +287,6 @@
   }
 }
 
-/* ---------- portrait / small screens ---------- */
 @media (max-width: 700px), (orientation: portrait) {
   :root {
     --frame-w: 92vw;
@@ -399,18 +298,9 @@
   .strip__adjacent {
     display: none;
   }
-  .titlecard {
-    padding: 0 6%;
-  }
-  .titlecard h1 {
-    font-size: clamp(1.7rem, 8.4vw, 2.7rem);
-  }
   .strip__stamp {
     font-size: 8px;
     letter-spacing: 0.16em;
-  }
-  .leader {
-    bottom: 16px;
   }
   .aspect-label {
     top: calc(50% - var(--frame-h) / 2 - 44px);
