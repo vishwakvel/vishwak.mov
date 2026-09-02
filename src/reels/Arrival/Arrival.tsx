@@ -29,27 +29,29 @@ const CARDS: Card[] = [
   },
 ]
 
-/** A shape suggested in the fog — a raised limb and a spread of tapering legs. */
+/** A shape suggested in the fog — a small dark body, a raised limb, and a
+ *  wide spread of long thin tapering legs. */
 function Heptapod({ className }: { className: string }) {
   const bx = 100
-  const by = 74
-  const legs = Array.from({ length: 6 }, (_, i) => {
-    const t = i / 5 - 0.5
-    const a = t * Math.PI * 0.52
-    const len = 246 - Math.abs(t) * 34
-    const w = 15 - Math.abs(t) * 4
+  const by = 62
+  const N = 8
+  const legs = Array.from({ length: N }, (_, i) => {
+    const t = i / (N - 1) - 0.5
+    const a = t * Math.PI * 0.74
+    const len = 266 - Math.abs(t) * 26
+    const w = 8.5 - Math.abs(t) * 3
     const dx = Math.sin(a)
     const dy = Math.cos(a)
     const nx = dy
     const ny = -dx
-    const cx = bx + dx * len * 0.42 + t * 12
-    const cy = by + dy * len * 0.5
-    const tx = bx + dx * len + t * 26
+    const cx = bx + dx * len * 0.36
+    const cy = by + dy * len * 0.42
+    const tx = bx + dx * len + t * 8
     const ty = by + dy * len
     return (
       `M ${bx + nx * w} ${by + ny * w}` +
-      ` Q ${cx + nx * w * 0.4} ${cy + ny * w * 0.4} ${tx} ${ty}` +
-      ` Q ${cx - nx * w * 0.4} ${cy - ny * w * 0.4} ${bx - nx * w} ${by - ny * w} Z`
+      ` Q ${cx + nx * w * 0.5} ${cy + ny * w * 0.5} ${tx} ${ty}` +
+      ` Q ${cx - nx * w * 0.5} ${cy - ny * w * 0.5} ${bx - nx * w} ${by - ny * w} Z`
     )
   })
   return (
@@ -58,8 +60,8 @@ function Heptapod({ className }: { className: string }) {
         {legs.map((d, i) => (
           <path key={i} d={d} />
         ))}
-        <path d="M92 78 Q 66 32 96 2 Q 124 30 110 78 Z" />
-        <ellipse cx="100" cy="58" rx="31" ry="26" />
+        <path d="M94 66 Q 74 24 100 0 Q 122 22 108 66 Z" />
+        <ellipse cx="100" cy="52" rx="23" ry="21" />
       </g>
     </svg>
   )

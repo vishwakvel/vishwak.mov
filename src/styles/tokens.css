@@ -8,13 +8,13 @@
   --edge-amber: #e4a140;
   --steel: #7a828e;
 
-  /* reel 02 — Arrival: pale cold mist, dark figures, ink-dark language */
-  --arr-fog-hi: #c6cfcf;
-  --arr-fog: #9aa7a6;
-  --arr-slate: #6b7877;
-  --arr-deep: #434e4c;
-  --arr-void: #1a2321;
-  --arr-ink: #16211f;
+  /* reel 02 — Arrival: cold blue-grey mist, dark figures, ink-dark language */
+  --arr-fog-hi: #ccd6d8;
+  --arr-fog: #9fabad;
+  --arr-slate: #6f7c7e;
+  --arr-deep: #454f51;
+  --arr-void: #1b2224;
+  --arr-ink: #182123;
   --arr-ember: #b47c4d;
 
   /* true IMAX 15/70 frame: 1.43:1. Height-first so the letterbox bars always

@@ -3,46 +3,51 @@
 
 .arrival {
   color: var(--arr-ink);
-  background: radial-gradient(74% 66% at 50% 40%, #c8d0d0 0%, #a4b0af 38%, #7f8c8b 70%, #55605e 100%);
+  background:
+    radial-gradient(82% 78% at 50% 30%, #d3dcdd 0%, #aeb9bb 34%, #8b9799 62%, #616c6e 88%, #4a5557 100%);
   container-type: size;
 }
 
+/* backlit haze — brightest up the centre, drifting */
 .arrival__fog {
   position: absolute;
-  inset: -14%;
+  inset: -16%;
   background:
-    radial-gradient(42% 52% at 26% 42%, rgba(232, 237, 236, 0.55), transparent 72%),
-    radial-gradient(46% 56% at 78% 56%, rgba(224, 231, 230, 0.42), transparent 72%),
-    radial-gradient(96% 74% at 50% 22%, rgba(228, 234, 233, 0.4), transparent 74%);
-  filter: blur(7px);
+    radial-gradient(34% 60% at 50% 8%, rgba(238, 243, 243, 0.75), transparent 70%),
+    radial-gradient(40% 48% at 24% 40%, rgba(226, 233, 233, 0.42), transparent 74%),
+    radial-gradient(44% 52% at 80% 52%, rgba(220, 228, 228, 0.34), transparent 74%),
+    radial-gradient(120% 80% at 50% 26%, rgba(224, 232, 232, 0.3), transparent 78%);
+  filter: blur(8px);
 }
 
-/* figures in the mist — dark, reaching in from the edges */
+/* figures in the mist — soft cold silhouettes, the right one large and close */
 .hep {
   position: absolute;
-  bottom: -4%;
-  height: 118%;
-  color: #1a2422;
-  filter: blur(9px);
+  bottom: -2%;
 }
 .hep--1 {
-  left: -16%;
-  width: 48%;
-  opacity: 0.72;
-  transform: rotate(6deg);
+  left: 0%;
+  width: 34%;
+  height: 118%;
+  color: #283235;
+  opacity: 0.62;
+  filter: blur(10px);
 }
 .hep--2 {
-  right: -14%;
-  width: 42%;
-  opacity: 0.5;
-  transform: scaleX(-1) rotate(4deg);
+  right: -16%;
+  width: 56%;
+  height: 126%;
+  color: #202a2c;
+  opacity: 0.72;
+  filter: blur(8px);
+  transform: scaleX(-1);
 }
 
 .arrival__grade {
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(130% 116% at 50% 44%, transparent 40%, rgba(20, 26, 25, 0.5) 100%);
+    radial-gradient(135% 120% at 50% 42%, transparent 52%, rgba(22, 28, 29, 0.4) 100%);
 }
 .arrival__grade::after {
   content: "";
