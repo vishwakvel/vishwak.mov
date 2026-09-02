@@ -26,6 +26,8 @@
   --font-mono: "Space Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
   --font-arr-display: "Jost", ui-sans-serif, system-ui, sans-serif;
   --font-arr-body: "Newsreader", Georgia, "Times New Roman", serif;
+  --font-marker: "Permanent Marker", "Caveat", cursive;
+  --font-hand: "Caveat", "Segoe Print", cursive;
 
   color-scheme: dark;
 }

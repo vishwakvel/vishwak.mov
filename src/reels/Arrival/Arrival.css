@@ -1,41 +1,50 @@
-/* Reel 02 — Arrival. Figures in the mist behind, three glyphs above, and a
-   pale analysis panel that resolves one at a time — a gloss, the candidate
-   meanings, then the translation. (.arrival is sized to .gate-screen.) */
+/* Reel 02 — Arrival. Shapes in the fog, three circles above, and the
+   translation written up on a whiteboard. (.arrival is sized to .gate-screen.) */
 
 .arrival {
   color: var(--arr-ink);
-  background: var(--arr-void);
+  background:
+    radial-gradient(78% 68% at 50% 40%, #7c8a81 0%, #58655d 42%, #37413b 72%, #1a221e 100%);
   container-type: size;
 }
 
-.arrival__bg {
+.arrival__fog {
   position: absolute;
-  inset: -6%;
-  background-size: cover;
-  background-position: 50% 36%;
-  filter: blur(1.5px) saturate(0.58) brightness(1) contrast(1.02);
+  inset: -14%;
+  background:
+    radial-gradient(40% 50% at 28% 44%, rgba(210, 218, 210, 0.2), transparent 72%),
+    radial-gradient(44% 54% at 76% 58%, rgba(196, 206, 198, 0.16), transparent 72%),
+    radial-gradient(95% 72% at 50% 26%, rgba(206, 216, 208, 0.14), transparent 74%);
+  filter: blur(7px);
 }
 
-/* the shell — present now, a dark mass at the frame's right edge */
-.arrival__shell {
+/* figures suggested in the mist — dark against the fog */
+.hep {
   position: absolute;
-  right: -14%;
-  top: -14%;
-  width: 38%;
-  height: 130%;
-  border-radius: 50%;
-  background: radial-gradient(closest-side, #040c0a 0%, #081310 46%, rgba(9, 19, 16, 0.35) 82%, transparent 100%);
-  filter: blur(7px);
-  opacity: 1;
+  bottom: -6%;
+  height: 116%;
+  color: #0a1310;
+  opacity: 0.74;
+  filter: blur(9px);
+}
+.hep--1 {
+  left: -10%;
+  width: 44%;
+  transform: rotate(7deg);
+}
+.hep--2 {
+  right: -8%;
+  width: 36%;
+  opacity: 0.52;
+  transform: scaleX(-1) rotate(5deg);
 }
 
 .arrival__grade {
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(180deg, rgba(16, 24, 20, 0.2) 0%, rgba(10, 16, 13, 0.42) 100%),
-    radial-gradient(56% 44% at 40% 36%, rgba(60, 82, 70, 0.16), transparent 72%),
-    radial-gradient(128% 108% at 50% 48%, transparent 46%, rgba(0, 0, 0, 0.56) 100%);
+    linear-gradient(180deg, rgba(16, 24, 20, 0.06) 0%, rgba(10, 16, 13, 0.36) 100%),
+    radial-gradient(130% 112% at 50% 46%, transparent 42%, rgba(0, 0, 0, 0.6) 100%);
 }
 .arrival__grade::after {
   content: "";
@@ -45,37 +54,29 @@
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
-/* ---------- eyebrow ---------- */
-.arrival__eyebrow {
+.arrival__tag {
   position: absolute;
   left: 7%;
   top: 7.5%;
   z-index: 5;
-  display: flex;
-  align-items: baseline;
-  gap: 1.4em;
   font-family: var(--font-mono);
   font-size: clamp(8px, 1.2cqw, 10px);
-  letter-spacing: 0.26em;
+  letter-spacing: 0.3em;
   text-transform: uppercase;
-  color: color-mix(in srgb, var(--arr-ember) 62%, #0e1512);
-  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.55);
-}
-.arrival__hint {
-  letter-spacing: 0.18em;
-  color: rgba(20, 26, 22, 0.62);
+  color: color-mix(in srgb, var(--arr-ember) 78%, #f0efe8);
+  text-shadow: 0 1px 10px rgba(0, 0, 0, 0.7);
 }
 
-/* ---------- the three glyphs ---------- */
+/* ---------- the three circles ---------- */
 .glyphs {
   position: absolute;
   left: 0;
   right: 0;
-  top: 15%;
+  top: 19%;
   z-index: 4;
   display: flex;
   justify-content: center;
-  gap: clamp(22px, 7cqw, 90px);
+  gap: clamp(24px, 7cqw, 96px);
 }
 .glyph {
   appearance: none;
@@ -85,59 +86,56 @@
   margin: 0;
   cursor: pointer;
   position: relative;
-  width: clamp(84px, 14cqw, 156px);
+  width: clamp(82px, 13.5cqw, 150px);
   aspect-ratio: 1;
 }
-/* selection frame — the machine has this glyph in its sights */
 .glyph::before {
   content: "";
   position: absolute;
-  inset: -16%;
-  border: 1px solid color-mix(in srgb, var(--arr-ember) 32%, transparent);
+  inset: -18%;
+  border: 1px solid color-mix(in srgb, var(--arr-ember) 30%, transparent);
   opacity: 0;
   transition: opacity 0.4s ease;
 }
 .glyph.is-active::before {
   opacity: 1;
 }
-/* the ink itself — the image masks a grey fill, so only the language shows */
 .glyph__ink {
   position: absolute;
   inset: 0;
-  background: linear-gradient(155deg, #b9c1b8 0%, #8b968b 55%, #6b756d 100%);
+  background: linear-gradient(155deg, #cbd2c9 0%, #9aa49a 55%, #7a847b 100%);
   -webkit-mask: var(--glyph) center / contain no-repeat;
   mask: var(--glyph) center / contain no-repeat;
   -webkit-mask-mode: luminance;
   mask-mode: luminance;
   transform: rotate(var(--rot, 0deg)) scaleX(var(--flip, 1));
-  opacity: 0.6;
+  opacity: 0.66;
   transition: opacity 0.5s ease, background 0.5s ease;
 }
 .glyph.is-active .glyph__ink {
   opacity: 1;
-  background: linear-gradient(155deg, #d9e0d8 0%, #a8b2a8 55%, #869089 100%);
+  background: linear-gradient(155deg, #dbe1d9 0%, #aab4aa 55%, #889289 100%);
+  animation: glyph-draw 0.7s ease-out;
 }
-.glyph__tag {
-  position: absolute;
-  left: 50%;
-  bottom: -1.6em;
-  transform: translateX(-50%);
-  font-family: var(--font-mono);
-  font-size: 10px;
-  letter-spacing: 0.24em;
-  color: color-mix(in srgb, var(--arr-ink) 40%, transparent);
-  transition: color 0.5s ease;
-}
-.glyph.is-active .glyph__tag {
-  color: color-mix(in srgb, var(--arr-ember) 80%, transparent);
+@keyframes glyph-draw {
+  0% {
+    opacity: 0;
+    filter: blur(7px);
+    transform: rotate(var(--rot, 0deg)) scaleX(var(--flip, 1)) scale(0.82);
+  }
+  100% {
+    opacity: 1;
+    filter: blur(0);
+    transform: rotate(var(--rot, 0deg)) scaleX(var(--flip, 1)) scale(1);
+  }
 }
 .glyph:focus-visible {
   outline: 1px solid color-mix(in srgb, var(--arr-ember) 55%, transparent);
   outline-offset: 8px;
 }
 
-/* ---------- the analysis panel — pale, like the machine's readout ---------- */
-.analysis {
+/* ---------- the whiteboard ---------- */
+.boards {
   position: absolute;
   left: 7%;
   right: 7%;
@@ -145,74 +143,61 @@
   z-index: 4;
   min-height: 42%;
 }
-.panel {
+.board {
   position: absolute;
   left: 0;
   right: 0;
   bottom: 0;
-  max-width: 40rem;
-  padding: clamp(16px, 2.3cqw, 30px);
-  background: rgba(228, 232, 225, 0.92);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-  border: 1px solid rgba(255, 255, 255, 0.45);
-  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.4);
-  color: #1a221e;
+  max-width: 42rem;
+  padding: clamp(18px, 2.6cqw, 36px) clamp(20px, 3cqw, 44px);
+  background: linear-gradient(#f4f3ec, #eceae0);
+  border: 1px solid #5f5f57;
+  box-shadow:
+    0 28px 64px rgba(0, 0, 0, 0.48),
+    inset 0 0 60px rgba(0, 0, 0, 0.03);
+  color: #2a2a24;
+  transform: rotate(-0.7deg);
   opacity: 0;
   visibility: hidden;
-  transform: translateY(16px);
   transition: opacity 0.45s ease, transform 0.45s ease, visibility 0.45s;
 }
-.panel.is-shown {
+.board.is-shown {
   opacity: 1;
   visibility: visible;
-  transform: none;
+  transform: rotate(-0.7deg) translateY(0);
 }
-.panel__head {
-  display: flex;
-  justify-content: space-between;
-  font-family: var(--font-mono);
-  font-size: 9.5px;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: rgba(26, 34, 30, 0.5);
+.board:not(.is-shown) {
+  transform: rotate(-0.7deg) translateY(14px);
 }
-.panel__gloss {
-  margin: 0.45em 0 0;
-  font-family: var(--font-display);
-  font-weight: 400;
-  font-size: clamp(1.6rem, 4.6cqw, 2.7rem);
-  letter-spacing: 0.04em;
-  color: #121814;
+.board__gloss {
+  margin: 0;
+  font-family: var(--font-marker);
+  font-size: clamp(1.9rem, 5.6cqw, 3.1rem);
+  line-height: 1;
+  letter-spacing: 0.02em;
+  color: #1c1c19;
 }
-.panel__related {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.4em 1em;
-  margin: 0.9em 0 0;
-  padding: 0.75em 0 0;
-  border-top: 1px solid rgba(26, 34, 30, 0.16);
-  list-style: none;
-  font-family: var(--font-mono);
-  font-size: 10.5px;
-  letter-spacing: 0.08em;
-  color: rgba(26, 34, 30, 0.52);
+.board__gloss::after {
+  content: "";
+  display: block;
+  width: 2.2em;
+  height: 3px;
+  margin-top: 0.28em;
+  background: #2a2a24;
+  border-radius: 2px;
+  transform: rotate(-0.8deg) scaleX(0.98);
+  opacity: 0.8;
 }
-.panel__related li::before {
-  content: "≈ ";
-  opacity: 0.45;
-}
-.panel__text {
-  margin: 1em 0 0;
-  font-family: var(--font-arr-body);
-  font-optical-sizing: auto;
-  font-size: clamp(0.8rem, 1.7cqw, 1rem);
-  line-height: 1.6;
-  color: #232b26;
-  text-wrap: pretty;
+.board__text {
+  margin: 0.85em 0 0;
+  font-family: var(--font-hand);
+  font-weight: 600;
+  font-size: clamp(1.05rem, 2.3cqw, 1.46rem);
+  line-height: 1.4;
+  color: #33332c;
 }
 
-/* ---------- reduced motion: glyphs + all panels stacked ---------- */
+/* ---------- reduced motion ---------- */
 @media (prefers-reduced-motion: reduce) {
   .arrival {
     padding: 10vh max(7vw, 22px);
@@ -226,8 +211,9 @@
   }
   .glyph__ink {
     opacity: 0.7;
+    animation: none;
   }
-  .analysis {
+  .boards {
     position: relative;
     left: auto;
     right: auto;
@@ -237,12 +223,12 @@
     flex-direction: column;
     gap: 1.5rem;
   }
-  .panel {
+  .board {
     position: relative;
     max-width: 44rem;
     opacity: 1;
     visibility: visible;
-    transform: none;
+    transform: rotate(-0.7deg);
     transition: none;
   }
 }
@@ -253,11 +239,6 @@
     overflow-y: auto;
     overflow-x: hidden;
   }
-  .arrival__eyebrow {
-    top: 3.5%;
-    flex-direction: column;
-    gap: 0.3em;
-  }
   .glyphs {
     position: absolute;
     top: 12%;
@@ -267,9 +248,9 @@
     width: 20vw;
   }
   .glyph__ink {
-    opacity: 0.5;
+    opacity: 0.55;
   }
-  .analysis {
+  .boards {
     position: absolute;
     left: 6%;
     right: 6%;
@@ -277,15 +258,15 @@
     top: 34%;
     min-height: 0;
   }
-  .panel {
+  .board {
     max-width: none;
-    padding: 16px 18px;
+    padding: 16px 20px;
   }
-  .panel:not(.is-shown) {
+  .board:not(.is-shown) {
     display: none;
   }
-  .panel__text {
-    font-size: clamp(0.78rem, 3.7cqw, 0.9rem);
-    line-height: 1.52;
+  .board__text {
+    font-size: clamp(1rem, 4.6cqw, 1.2rem);
+    line-height: 1.4;
   }
 }
